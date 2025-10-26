@@ -1,0 +1,5 @@
+{
+  "name": " AI Plagiarism Checker",
+  "description": "An advanced plagiarism checker that uses AI to analyze documents, identify similarities with internal and external sources, and provide detailed reports with interactive visualizations.",
+  "requestFramePermissions": []
+}
