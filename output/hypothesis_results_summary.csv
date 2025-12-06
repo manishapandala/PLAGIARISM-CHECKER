@@ -1,0 +1,11 @@
+Hypothesis,Title,Test_Used,P_Value,Reject_Null,Conclusion
+H1,Stress vs Productivity,Pearson Correlation + Linear Regression,1.2955667379690146e-28,True,"REJECT H₀. Correlation = -0.1106, p = 0.0000. Higher stress is associated with lower productivity."
+H2,Sector Comparison (Productivity),One-Way ANOVA + Kruskal-Wallis,4.4211636304730975e-263,True,"REJECT H₀. F = 324.6490, p = 0.0000. Significant differences exist between sectors."
+H3,Technology Adaptation vs Productivity,Linear Regression,8.025392748000785e-07,True,"REJECT H₀. β = 0.0410, p = 0.0000. Better tech adaptation is associated with higher productivity."
+H4,Work Mode vs Stress,Independent t-test + Chi-square,0.011973601789081124,True,"REJECT H₀. t = 2.5134, p = 0.0120, d = 0.0624. Remote workers have higher stress."
+H5,Work Hours vs Stress,Pearson + Spearman Correlation,1.1929527184192155e-76,True,"REJECT H₀. r = 0.1837, p = 0.0000. Longer work hours are associated with higher stress."
+H6,Collaboration Challenges vs Productivity,ANOVA + Linear Regression,0.05192135014793789,False,"FAIL TO REJECT H₀. F = 2.5777, p = 0.0519. No significant relationship found."
+H7,Job Security vs PRI,Independent t-test + Regression,0.0,True,"REJECT H₀. t = 80.0242, p = 0.0000, d = 1.6023. Workers with secure jobs have significantly higher PRI."
+H8,Childcare Responsibilities vs Productivity,Independent t-test + Chi-square,0.6504155196433345,False,"FAIL TO REJECT H₀. t = -0.4532, p = 0.6504. No significant relationship found."
+H9,Meetings vs Stress,Pearson + Spearman Correlation,0.06349962915636512,False,"FAIL TO REJECT H₀. r = 0.0186, p = 0.0635. No significant correlation found."
+H10,Health Issues vs Productivity,Independent t-test,0.09578864636137611,False,"FAIL TO REJECT H₀. t = 1.6658, p = 0.0958, d = 0.0386. No significant relationship found."
