@@ -1,0 +1,120 @@
+======================================================================
+COVID-19 WORK AND WELLBEING ANALYSIS - COMPREHENSIVE REPORT
+======================================================================
+
+Generated: 2025-12-06 04:02:54
+Dataset Size: 10,000 records
+
+
+======================================================================
+HYPOTHESIS TESTING RESULTS
+======================================================================
+
+
+H1: Stress vs Productivity
+----------------------------------------------------------------------
+Null Hypothesis: Stress level has no effect on productivity
+Alternative Hypothesis: Higher stress levels reduce productivity
+Test Used: Pearson Correlation + Linear Regression
+P-value: 0.000000
+Decision: REJECT H₀
+Conclusion: REJECT H₀. Correlation = -0.1106, p = 0.0000. Higher stress is associated with lower productivity.
+
+
+H2: Sector Comparison (Productivity)
+----------------------------------------------------------------------
+Null Hypothesis: Average productivity change is equal across sectors
+Alternative Hypothesis: At least one sector differs in productivity change
+Test Used: One-Way ANOVA + Kruskal-Wallis
+P-value: 0.000000
+Decision: REJECT H₀
+Conclusion: REJECT H₀. F = 324.6490, p = 0.0000. Significant differences exist between sectors.
+
+
+H3: Technology Adaptation vs Productivity
+----------------------------------------------------------------------
+Null Hypothesis: Technology adaptation is unrelated to productivity
+Alternative Hypothesis: Better technology adaptation improves productivity
+Test Used: Linear Regression
+P-value: 0.000001
+Decision: REJECT H₀
+Conclusion: REJECT H₀. β = 0.0410, p = 0.0000. Better tech adaptation is associated with higher productivity.
+
+
+H4: Work Mode vs Stress
+----------------------------------------------------------------------
+Null Hypothesis: Work mode is not associated with stress
+Alternative Hypothesis: Stress levels differ between remote and on-site workers
+Test Used: Independent t-test + Chi-square
+P-value: 0.011974
+Decision: REJECT H₀
+Conclusion: REJECT H₀. t = 2.5134, p = 0.0120, d = 0.0624. Remote workers have higher stress.
+
+
+H5: Work Hours vs Stress
+----------------------------------------------------------------------
+Null Hypothesis: Hours worked per day are not correlated with stress
+Alternative Hypothesis: Longer work hours increase stress levels
+Test Used: Pearson + Spearman Correlation
+P-value: 0.000000
+Decision: REJECT H₀
+Conclusion: REJECT H₀. r = 0.1837, p = 0.0000. Longer work hours are associated with higher stress.
+
+
+H6: Collaboration Challenges vs Productivity
+----------------------------------------------------------------------
+Null Hypothesis: Collaboration challenges do not affect productivity
+Alternative Hypothesis: Collaboration challenges decrease productivity
+Test Used: ANOVA + Linear Regression
+P-value: 0.051921
+Decision: FAIL TO REJECT H₀
+Conclusion: FAIL TO REJECT H₀. F = 2.5777, p = 0.0519. No significant relationship found.
+
+
+H7: Job Security vs PRI
+----------------------------------------------------------------------
+Null Hypothesis: Job security has no effect on PRI
+Alternative Hypothesis: Workers with secure jobs have higher PRI
+Test Used: Independent t-test + Regression
+P-value: 0.000000
+Decision: REJECT H₀
+Conclusion: REJECT H₀. t = 80.0242, p = 0.0000, d = 1.6023. Workers with secure jobs have significantly higher PRI.
+
+
+H8: Childcare Responsibilities vs Productivity
+----------------------------------------------------------------------
+Null Hypothesis: Childcare duties are unrelated to productivity
+Alternative Hypothesis: Childcare responsibilities lower productivity
+Test Used: Independent t-test + Chi-square
+P-value: 0.650416
+Decision: FAIL TO REJECT H₀
+Conclusion: FAIL TO REJECT H₀. t = -0.4532, p = 0.6504. No significant relationship found.
+
+
+H9: Meetings vs Stress
+----------------------------------------------------------------------
+Null Hypothesis: Number of meetings is unrelated to stress
+Alternative Hypothesis: More meetings increase stress levels
+Test Used: Pearson + Spearman Correlation
+P-value: 0.063500
+Decision: FAIL TO REJECT H₀
+Conclusion: FAIL TO REJECT H₀. r = 0.0186, p = 0.0635. No significant correlation found.
+
+
+H10: Health Issues vs Productivity
+----------------------------------------------------------------------
+Null Hypothesis: Health issues do not affect productivity
+Alternative Hypothesis: Health issues reduce productivity
+Test Used: Independent t-test
+P-value: 0.095789
+Decision: FAIL TO REJECT H₀
+Conclusion: FAIL TO REJECT H₀. t = 1.6658, p = 0.0958, d = 0.0386. No significant relationship found.
+
+
+======================================================================
+SUMMARY
+======================================================================
+Total Hypotheses Tested: 10
+Null Hypotheses Rejected: 6
+Null Hypotheses Not Rejected: 4
+Significance Level (α): 0.05
