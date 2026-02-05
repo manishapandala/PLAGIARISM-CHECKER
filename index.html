@@ -1,173 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Gapminder D3 Scatterplot</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://d3js.org/d3.v7.min.js"></script>
-    <style>
-      body {
-        margin: 0;
-        font-family: sans-serif;
-        background: #f7f7f7;
-        color: #1f2933;
-      }
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css">
 
-      .page {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 24px;
-      }
-
-      .center {
-        display: flex;
-        justify-content: center;
-      }
-    </style>
+    <link href="style.css" rel="stylesheet">
+    <title>Homework #2</title>
   </head>
   <body>
-    <div class="page">
-      <div class="center"></div>
+    <div class="center"></div>
+
+    <div class="container" id="container">
+      <header>
+        <h2 style="">Homework #2 - D3 Simple</h2>
+        <h3>FirstName LastName&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;Email</h3>
+      </header>
     </div>
-    <script>
-      const width = 960;
-      const height = 560;
-      const margin = { top: 70, right: 170, bottom: 70, left: 90 };
-
-      const svg = d3
-        .select(".center")
-        .append("svg")
-        .attr("width", width)
-        .attr("height", height);
-
-      const innerWidth = width - margin.left - margin.right;
-      const innerHeight = height - margin.top - margin.bottom;
-
-      const chart = svg
-        .append("g")
-        .attr("transform", `translate(${margin.left},${margin.top})`);
-
-      const parseRow = (d) => ({
-        country: d.country,
-        continent: d.continent,
-        year: +d.year,
-        lifeExp: +d.lifeExp,
-        pop: +d.pop,
-        gdpPercap: +d.gdpPercap,
-      });
-
-      d3.tsv("gapminderDataFiveYear.tsv", parseRow)
-        .then((data) => {
-          const filtered = data.filter(
-            (d) => d.year === 1952 || d.year === 2007
-          );
-
-          const x = d3
-            .scaleLog()
-            .domain(d3.extent(filtered, (d) => d.gdpPercap))
-            .range([0, innerWidth])
-            .nice();
-
-          const y = d3
-            .scaleLinear()
-            .domain(d3.extent(filtered, (d) => d.lifeExp))
-            .range([innerHeight, 0])
-            .nice();
-
-          const radius = d3
-            .scaleSqrt()
-            .domain(d3.extent(filtered, (d) => d.pop))
-            .range([4, 10]);
-
-          const color = d3.scaleOrdinal(d3.schemeCategory10);
-
-          chart
-            .append("g")
-            .attr("transform", `translate(0,${innerHeight})`)
-            .call(d3.axisBottom(x).ticks(11, ".0s"));
-
-          chart.append("g").call(d3.axisLeft(y));
-
-          chart
-            .selectAll("circle")
-            .data(filtered)
-            .join("circle")
-            .attr("cx", (d) => x(d.gdpPercap))
-            .attr("cy", (d) => y(d.lifeExp))
-            .attr("r", (d) => radius(d.pop))
-            .attr("fill", (d) => color(d.continent))
-            .attr("opacity", 0.8);
-
-          svg
-            .append("text")
-            .attr("x", width / 2)
-            .attr("y", 30)
-            .attr("text-anchor", "middle")
-            .style("font-family", "sans-serif")
-            .style("font-size", "16px")
-            .style("font-weight", "700")
-            .style("text-decoration", "underline")
-            .text(
-              "Gapminder Life Expectancy vs GDP per Capita (1952 & 2007)"
-            );
-
-          svg
-            .append("text")
-            .attr("x", margin.left + innerWidth / 2)
-            .attr("y", height - 20)
-            .attr("text-anchor", "middle")
-            .style("font-family", "sans-serif")
-            .style("font-size", "14px")
-            .style("font-weight", "700")
-            .text("GDP per Capita (log scale)");
-
-          svg
-            .append("text")
-            .attr(
-              "transform",
-              `translate(22, ${margin.top + innerHeight / 2}) rotate(-90)`
-            )
-            .attr("text-anchor", "middle")
-            .style("font-family", "sans-serif")
-            .style("font-size", "14px")
-            .style("font-weight", "700")
-            .text("Life Expectancy (years)");
-
-          const continents = Array.from(
-            new Set(filtered.map((d) => d.continent))
-          ).sort();
-
-          const legend = svg
-            .append("g")
-            .attr(
-              "transform",
-              `translate(${margin.left + innerWidth + 20}, ${margin.top})`
-            )
-            .style("font-family", "sans-serif")
-            .style("font-size", "11px");
-
-          legend
-            .selectAll("g")
-            .data(continents)
-            .join("g")
-            .attr("transform", (d, i) => `translate(0, ${i * 18})`)
-            .call((g) => {
-              g.append("rect")
-                .attr("width", 12)
-                .attr("height", 12)
-                .attr("fill", (d) => color(d));
-
-              g.append("text").attr("x", 18).attr("y", 10).text((d) => d);
-            });
-        })
-        .catch((error) => {
-          console.error("Failed to load data:", error);
-          d3.select(".center")
-            .append("p")
-            .style("font-family", "sans-serif")
-            .style("color", "crimson")
-            .text("Unable to load gapminder data. Check the TSV file path.");
-        });
-    </script>
+    <!--
+        The script is linked after the body 
+        because the code inside index.js immediately runs. 
+    -->
+    <script src="index.js"></script>
   </body>
 </html>
