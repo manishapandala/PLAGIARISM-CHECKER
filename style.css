@@ -2,8 +2,8 @@ body {
   font-family: Arial, sans-serif;
 }
 
-.line {
-  fill: none;
-  stroke: #0d6efd;
-  stroke-width: 2;
+.center {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
 }

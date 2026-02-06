@@ -8,7 +8,7 @@ continent.
 ## Project Files
 
 - `index.html` - D3.js visualization with all required steps implemented.
-- `gapminderDataFiveYear.tsv` - Five-year dataset for 65 countries (1952-2007).
+- `data/gapminderDataFiveYear.tsv` - Five-year dataset for 65 countries (1952-2007).
 - `IMPLEMENTATION_GUIDE.md` - Quick reference and submission checklist.
 
 ## Run Locally
@@ -52,7 +52,7 @@ const parseRow = (d) => ({
   gdpPercap: +d.gdpPercap,
 });
 
-d3.tsv("gapminderDataFiveYear.tsv", parseRow).then((data) => {
+d3.tsv("data/gapminderDataFiveYear.tsv", parseRow).then((data) => {
   // ...
 });
 ```

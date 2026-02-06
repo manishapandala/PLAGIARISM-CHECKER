@@ -5,7 +5,7 @@ Quick reference for the Gapminder D3 visualization plus a submission checklist.
 ## Quick Reference
 
 - **Entry point:** `index.html`
-- **Data file:** `gapminderDataFiveYear.tsv`
+- **Data file:** `data/gapminderDataFiveYear.tsv`
 - **Chart size:** 960 x 560 (with margins)
 - **Years shown:** 1952 and 2007
 - **Color palette:** `d3.schemeCategory10`
