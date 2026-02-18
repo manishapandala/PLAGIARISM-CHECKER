@@ -1,4 +1,10 @@
 (() => {
+  const d3 = window.d3;
+  if (!d3 || typeof d3.sankey !== "function") {
+    // Keep failure mode explicit if external libraries fail to load.
+    throw new Error("D3 and d3-sankey must be loaded before cursoragent.js.");
+  }
+
   const CHARACTER_GROUPS = {
     consonants: "bcdfghjklmnpqrstvwxz".split(""),
     vowels: "aeiouy".split(""),
