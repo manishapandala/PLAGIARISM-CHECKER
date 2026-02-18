@@ -25,12 +25,15 @@
     });
   });
 
-  const textInput = document.getElementById("text_input");
+  const textInput = document.getElementById("wordbox");
   const submitButton = document.getElementById("submit_button");
-  const sankeyTitle = document.getElementById("sankey_title");
+  const sankeyTitle = document.getElementById("flow_label");
   const tooltip = d3.select("#tooltip");
-  const treemapSvg = d3.select("#treemap_div");
-  const sankeySvg = d3.select("#sankey_div");
+  const treemapSvg = d3.select("#treemap_svg");
+  const sankeySvg = d3.select("#sankey_svg");
+  if (!textInput || !submitButton || !sankeyTitle || treemapSvg.empty() || sankeySvg.empty()) {
+    throw new Error("Expected chart controls and SVG containers were not found in the page.");
+  }
 
   const appState = {
     hasSubmitted: false,
