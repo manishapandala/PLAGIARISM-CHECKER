@@ -1,57 +1,209 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AI Plagiarism Checker</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            fontFamily: {
-              sans: ['Inter', 'sans-serif'],
-            },
-            colors: {
-              primary: {
-                DEFAULT: '#4f46e5',
-                '50': '#eef2ff',
-                '100': '#e0e7ff',
-                '200': '#c7d2fe',
-                '300': '#a5b4fc',
-                '400': '#818cf8',
-                '500': '#6366f1',
-                '600': '#4f46e5',
-                '700': '#4338ca',
-                '800': '#3730a3',
-                '900': '#312e81',
-                '950': '#1e1b4b',
-              },
-            }
-          }
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Character Flow Visualization</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --page-bg: #0b1220;
+      --panel-bg: #e6e7e8;
+      --border: #5f6368;
+      --text: #222;
+      --consonant: #e9eab5;
+      --vowel: #9fc8c1;
+      --punctuation: #b9b5d7;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: var(--page-bg);
+      color: var(--text);
+      padding: 12px;
+    }
+
+    .app-shell {
+      max-width: 1280px;
+      margin: 0 auto;
+      background: #f2f2f2;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .panel {
+      background: var(--panel-bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 8px;
+      position: relative;
+    }
+
+    #student_info {
+      font-size: 14px;
+      line-height: 1.3;
+      color: #111827;
+      margin-bottom: 4px;
+    }
+
+    #student_info strong {
+      font-weight: 700;
+    }
+
+    .controls-label {
+      display: block;
+      font-size: 26px;
+      margin-bottom: 6px;
+    }
+
+    #text_input {
+      width: 100%;
+      min-height: 170px;
+      resize: vertical;
+      border: 1px solid #b6b8bc;
+      border-radius: 4px;
+      padding: 10px;
+      font-size: 16px;
+      line-height: 1.45;
+      color: #222;
+      background: #f9f9f9;
+    }
+
+    #submit_button {
+      margin-top: 6px;
+      border: 1px solid #5f6368;
+      background: #2f3541;
+      color: #f6f6f6;
+      border-radius: 4px;
+      padding: 8px 14px;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    #submit_button:hover {
+      background: #1f2530;
+    }
+
+    .chart-grid {
+      display: grid;
+      gap: 8px;
+      grid-template-columns: 1fr 1fr;
+      min-height: 420px;
+    }
+
+    .chart-title {
+      margin: 0 0 8px;
+      font-size: 38px;
+      font-weight: 600;
+      color: #2f3439;
+    }
+
+    .chart-frame {
+      border: 1px solid #c9cdd2;
+      border-radius: 4px;
+      background: #e8e8e8;
+      width: 100%;
+      height: 100%;
+    }
+
+    #treemap_div,
+    #sankey_div {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .tooltip {
+      position: fixed;
+      left: 0;
+      top: 0;
+      pointer-events: none;
+      opacity: 0;
+      transform: translate(14px, 14px);
+      border: 1px solid #171717;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 8px 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      font-size: 34px;
+      line-height: 1.3;
+      transition: opacity 0.15s ease-out, left 0.05s linear, top 0.05s linear;
+      z-index: 9999;
+      white-space: nowrap;
+    }
+
+    .empty-state {
+      fill: #6b7280;
+      font-size: 20px;
+      text-anchor: middle;
+      dominant-baseline: middle;
+    }
+
+    @media (max-width: 1024px) {
+      .chart-grid {
+        grid-template-columns: 1fr;
+        min-height: 740px;
       }
-    </script>
-<script type="importmap">
-{
-  "imports": {
-    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.27.0",
-    "react": "https://aistudiocdn.com/react@^19.2.0",
-    "react/": "https://aistudiocdn.com/react@^19.2.0/",
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
-    "recharts": "https://aistudiocdn.com/recharts@^3.3.0",
-    "pdfjs-dist": "https://aistudiocdn.com/pdfjs-dist@^4.6.0",
-    "mammoth": "https://aistudiocdn.com/mammoth@^1.8.0"
-  }
-}
-</script>
+
+      .chart-title {
+        font-size: 28px;
+      }
+
+      #submit_button {
+        font-size: 19px;
+      }
+
+      .controls-label {
+        font-size: 22px;
+      }
+
+      .tooltip {
+        font-size: 22px;
+      }
+    }
+  </style>
 </head>
-<body class="bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-200">
-    <div id="root"></div>
-    <script type="module" src="/index.tsx"></script>
+<body>
+  <div class="app-shell">
+    <div id="student_info">
+      <strong>Name:</strong> Cursor Agent<br />
+      <strong>Email:</strong> cursoragent@cursor.com
+    </div>
+
+    <section class="panel" id="controls_panel">
+      <label class="controls-label" for="text_input">Enter text here</label>
+      <textarea id="text_input" aria-label="Enter text"></textarea>
+      <button id="submit_button" type="button">Submit text</button>
+    </section>
+
+    <section class="chart-grid">
+      <div class="panel">
+        <h2 class="chart-title">Distribution of characters</h2>
+        <div class="chart-frame">
+          <svg id="treemap_div" aria-label="Treemap distribution chart"></svg>
+        </div>
+      </div>
+      <div class="panel">
+        <h2 class="chart-title" id="sankey_title">Character flow for ...</h2>
+        <div class="chart-frame">
+          <svg id="sankey_div" aria-label="Character flow sankey chart"></svg>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div id="tooltip" class="tooltip" role="tooltip" aria-hidden="true"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+  <script src="https://cdn.jsdelivr.net/npm/d3-sankey@0.12.3/dist/d3-sankey.min.js"></script>
+  <script src="/cursoragent.js"></script>
 </body>
 </html>
