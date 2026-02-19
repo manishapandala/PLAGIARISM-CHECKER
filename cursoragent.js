@@ -26,12 +26,20 @@
   });
 
   const textInput = document.getElementById("wordbox");
+  const textHighlightLayer = document.getElementById("text_highlight_layer");
   const submitButton = document.getElementById("submit_button");
   const sankeyTitle = document.getElementById("flow_label");
   const tooltip = d3.select("#tooltip");
   const treemapSvg = d3.select("#treemap_svg");
   const sankeySvg = d3.select("#sankey_svg");
-  if (!textInput || !submitButton || !sankeyTitle || treemapSvg.empty() || sankeySvg.empty()) {
+  if (
+    !textInput ||
+    !textHighlightLayer ||
+    !submitButton ||
+    !sankeyTitle ||
+    treemapSvg.empty() ||
+    sankeySvg.empty()
+  ) {
     throw new Error("Expected chart controls and SVG containers were not found in the page.");
   }
 
@@ -40,9 +48,19 @@
     normalizedChars: [],
     counts: createEmptyCountMap(),
     selectedChar: null,
+    hoveredChar: null,
   };
 
+  textInput.addEventListener("input", () => {
+    updateTextOverlay();
+  });
+
+  textInput.addEventListener("scroll", () => {
+    syncTextOverlayScroll();
+  });
+
   submitButton.addEventListener("click", () => {
+    setHoveredChar(null);
     const parsed = parseInputText(textInput.value || "");
     appState.hasSubmitted = true;
     appState.normalizedChars = parsed.normalizedChars;
@@ -50,6 +68,7 @@
     appState.selectedChar = null;
 
     hideTooltip();
+    updateTextOverlay();
     renderTreemap();
     clearSankey();
   });
@@ -63,7 +82,11 @@
     if (appState.selectedChar) {
       renderSankey(appState.selectedChar);
     }
+
+    syncTextOverlayScroll();
   });
+
+  updateTextOverlay();
 
   function createEmptyCountMap() {
     const counts = new Map();
@@ -178,6 +201,7 @@
       .attr("stroke-width", 1)
       .style("cursor", "pointer")
       .on("mouseover", (event, d) => {
+        setHoveredChar(d.data.char);
         const html = `Character: <strong>${d.data.char}</strong><br />Count: <strong>${d.data.value}</strong>`;
         showTooltip(html, event);
       })
@@ -186,6 +210,7 @@
       })
       .on("mouseout", () => {
         hideTooltip();
+        setHoveredChar(null);
       })
       .on("click", (_, d) => {
         appState.selectedChar = d.data.char;
@@ -199,8 +224,47 @@
   function updateTreemapSelection() {
     treemapSvg
       .selectAll("rect.char-rect")
-      .attr("stroke", (d) => (d.data.char === appState.selectedChar ? "#111827" : "#000"))
-      .attr("stroke-width", (d) => (d.data.char === appState.selectedChar ? 2 : 1));
+      .attr("stroke", (d) => {
+        if (appState.hoveredChar && d.data.char === appState.hoveredChar) {
+          return "#d97706";
+        }
+        if (d.data.char === appState.selectedChar) {
+          return "#111827";
+        }
+        return "#000";
+      })
+      .attr("stroke-width", (d) => {
+        if (appState.hoveredChar && d.data.char === appState.hoveredChar) {
+          return 3;
+        }
+        if (d.data.char === appState.selectedChar) {
+          return 2;
+        }
+        return 1;
+      });
+  }
+
+  function updateSankeyHighlights() {
+    sankeySvg
+      .selectAll("rect.sankey-node-rect")
+      .attr("stroke", (d) => {
+        if (appState.hoveredChar && d.char === appState.hoveredChar) {
+          return "#d97706";
+        }
+        if (appState.selectedChar && d.side === "middle") {
+          return "#111827";
+        }
+        return "#000";
+      })
+      .attr("stroke-width", (d) => {
+        if (appState.hoveredChar && d.char === appState.hoveredChar) {
+          return 3;
+        }
+        if (appState.selectedChar && d.side === "middle") {
+          return 2;
+        }
+        return 1;
+      });
   }
 
   function buildSankeyData(selectedChar) {
@@ -374,6 +438,7 @@
 
     nodeGroups
       .append("rect")
+      .attr("class", "sankey-node-rect")
       .attr("x", (d) => d.x0)
       .attr("y", (d) => d.y0)
       .attr("width", (d) => Math.max(0, d.x1 - d.x0))
@@ -384,6 +449,7 @@
       .attr("stroke", "#000")
       .attr("stroke-width", 1)
       .on("mouseover", (event, d) => {
+        setHoveredChar(d.char);
         showTooltip(getSankeyTooltipText(d, selectedChar, sankeyData.selectedCount), event);
       })
       .on("mousemove", (event) => {
@@ -391,6 +457,7 @@
       })
       .on("mouseout", () => {
         hideTooltip();
+        setHoveredChar(null);
       });
 
     nodeGroups
@@ -417,7 +484,10 @@
       })
       .style("font-size", `${Math.max(16, Math.min(30, width * 0.035))}px`)
       .style("fill", "#202124")
+      .style("pointer-events", "none")
       .text((d) => d.char);
+
+    updateSankeyHighlights();
   }
 
   function getSankeyTooltipText(node, selectedChar, selectedCount) {
@@ -428,6 +498,69 @@
       return `Character '${selectedChar}' flows into '${node.char}' <strong>${node.count}</strong> times.`;
     }
     return `Character '${selectedChar}' appears <strong>${selectedCount}</strong> times.`;
+  }
+
+  function setHoveredChar(char) {
+    const normalized = char ? char.toLowerCase() : null;
+    if (appState.hoveredChar === normalized) {
+      return;
+    }
+
+    appState.hoveredChar = normalized;
+    updateTreemapSelection();
+    updateSankeyHighlights();
+    updateTextOverlay();
+  }
+
+  function updateTextOverlay() {
+    const rawText = textInput.value || "";
+    textHighlightLayer.innerHTML = buildTextOverlayMarkup(rawText, appState.hoveredChar);
+    syncTextOverlayScroll();
+  }
+
+  function syncTextOverlayScroll() {
+    textHighlightLayer.scrollTop = textInput.scrollTop;
+    textHighlightLayer.scrollLeft = textInput.scrollLeft;
+  }
+
+  function buildTextOverlayMarkup(rawText, hoveredChar) {
+    if (!rawText) {
+      return "";
+    }
+
+    const targetChar = hoveredChar ? hoveredChar.toLowerCase() : null;
+    if (!targetChar || !GROUP_BY_CHARACTER.has(targetChar)) {
+      return preserveTrailingNewline(escapeHtml(rawText), rawText);
+    }
+
+    const highlightClass = `highlight-char highlight-${GROUP_BY_CHARACTER.get(targetChar)}`;
+    let html = "";
+    for (const char of rawText) {
+      const escapedChar = escapeHtml(char);
+      if (char.toLowerCase() === targetChar) {
+        html += `<mark class="${highlightClass}">${escapedChar}</mark>`;
+      } else {
+        html += escapedChar;
+      }
+    }
+
+    return preserveTrailingNewline(html, rawText);
+  }
+
+  function preserveTrailingNewline(htmlText, rawText) {
+    if (rawText.endsWith("\n")) {
+      return `${htmlText}\n`;
+    }
+    return htmlText;
+  }
+
+  function escapeHtml(text) {
+    return text
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
   }
 
   function showTooltip(html, event) {
