@@ -1,7 +1,6 @@
 (() => {
   const d3 = window.d3;
   if (!d3 || typeof d3.sankey !== "function") {
-    // Keep failure mode explicit if external libraries fail to load.
     throw new Error("D3 and d3-sankey must be loaded before cursoragent.js.");
   }
 
@@ -100,18 +99,18 @@
 
   function parseInputText(rawText) {
     const counts = createEmptyCountMap();
-    const normalizedChars = [];
-    const lower = rawText.toLowerCase();
+    const chars = [];
+    const text = rawText.toLowerCase();
 
-    for (const char of lower) {
-      if (!GROUP_BY_CHARACTER.has(char)) {
+    for (const ch of text) {
+      if (!GROUP_BY_CHARACTER.has(ch)) {
         continue;
       }
-      counts.set(char, (counts.get(char) || 0) + 1);
-      normalizedChars.push(char);
+      counts.set(ch, counts.get(ch) + 1);
+      chars.push(ch);
     }
 
-    return { counts, normalizedChars };
+    return { counts, normalizedChars: chars };
   }
 
   function buildTreemapHierarchy() {
@@ -345,7 +344,6 @@
       });
     });
 
-    // Hidden balancing nodes keep the middle node proportional to total selected count.
     const incomingTotal = leftEntries.reduce((sum, entry) => sum + entry[1], 0);
     const outgoingTotal = rightEntries.reduce((sum, entry) => sum + entry[1], 0);
     const missingIncoming = Math.max(0, selectedCount - incomingTotal);
