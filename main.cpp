@@ -55,12 +55,12 @@ int main()
                 }
                 else
                 {
-                    cout << "Before extract heap max operation:" << endl;
+                    cout << "\nBefore extract heap max operation:" << endl;
                     heap1->printHeap();
 
                     heap1->extractHeapMax();
 
-                    cout << "After extract heap max operation:" << endl;
+                    cout << "\nAfter extract heap max operation:" << endl;
                     heap1->printHeap();
                 }
                 break;
