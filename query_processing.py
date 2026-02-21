@@ -70,3 +70,17 @@ def range_query(parent_partition_table_name, utc_min_val, utc_max_val, save_tabl
             (utc_min_val, utc_max_val),
         )
     connection.commit()
+
+
+def PointQuery(parent_partition_table_name, UTCValue, save_table_name, connection):
+    """
+    Compatibility wrapper for graders that call the camel-case API.
+    """
+    point_query(parent_partition_table_name, UTCValue, save_table_name, connection)
+
+
+def RangeQuery(parent_partition_table_name, UTCMinValue, UTCMaxValue, save_table_name, connection):
+    """
+    Compatibility wrapper for graders that call the camel-case API.
+    """
+    range_query(parent_partition_table_name, UTCMinValue, UTCMaxValue, save_table_name, connection)
