@@ -22,3 +22,10 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Python artifacts for battery analysis workflow
+__pycache__/
+*.py[cod]
+.venv/
+battery_anomaly_detection/output/
+battery_anomaly_detection/data/

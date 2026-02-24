@@ -18,3 +18,15 @@ View your app in AI Studio: https://ai.studio/apps/drive/1AkjOw1C0wMNy-J4FS6ZdA6
 2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
 3. Run the app:
    `npm run dev`
+
+## Battery cell anomaly/build-variation workflow
+
+This repository now also includes a standalone unsupervised analysis workflow for battery-cell tabular data:
+
+- `battery_anomaly_detection/analyze_cells.py` - EDA + PCA/t-SNE + GMM clustering + lot enrichment
+- `battery_anomaly_detection/generate_synthetic_cells.py` - synthetic data generator for smoke tests
+- `battery_anomaly_detection/MEETING_CADENCE.md` - weekly to biweekly project cadence proposal
+
+See usage details in:
+
+- `battery_anomaly_detection/README.md`
