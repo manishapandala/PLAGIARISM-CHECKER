@@ -31,6 +31,6 @@ AI Plagiarism Checker — a client-side React SPA (Vite + TypeScript) that uses 
 
 ### Gotchas
 
-- There is no lockfile committed; `npm install` will resolve latest compatible versions each time.
+- `package-lock.json` is committed; use `npm install` (not `npm update`) to get reproducible installs.
 - Tailwind CSS is loaded from a CDN `<script>` tag, not installed as a dependency.
 - `pdfjs-dist` worker is loaded from a CDN URL hard-coded in `utils/fileReader.ts`.
