@@ -7,11 +7,14 @@
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <style>
     :root {
-      --bg: #0a0f1f;
-      --card: #101a36;
-      --ink: #e6ebff;
-      --muted: #96a4d7;
-      --accent: #f2c14e;
+      --bg: #071125;
+      --ink: #edf2ff;
+      --muted: #a8b6e3;
+      --card: rgba(15, 28, 59, 0.74);
+      --line: rgba(168, 191, 255, 0.24);
+      --accent: #ffd166;
+      --accent-2: #8ec5ff;
+      --success: #87f0b0;
     }
 
     * {
@@ -20,116 +23,276 @@
 
     body {
       margin: 0;
-      font-family: Inter, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       color: var(--ink);
-      background: radial-gradient(circle at 10% 5%, #1d2e5d 0%, var(--bg) 50%);
+      font-family: Inter, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background:
+        radial-gradient(1200px 700px at -10% -20%, #2d4fa1 0%, rgba(45, 79, 161, 0) 55%),
+        radial-gradient(1000px 700px at 120% -10%, #4a2b7c 0%, rgba(74, 43, 124, 0) 55%),
+        var(--bg);
       min-height: 100vh;
       line-height: 1.45;
     }
 
     .container {
-      width: min(1200px, 95vw);
-      margin: 24px auto 40px;
+      width: min(1320px, 96vw);
+      margin: 24px auto 42px;
+    }
+
+    .hero {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 18px 20px;
+      background: linear-gradient(145deg, rgba(22, 39, 80, 0.86), rgba(8, 16, 34, 0.86));
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.24);
+      margin-bottom: 14px;
     }
 
     h1 {
       margin: 0 0 8px;
-      font-size: clamp(1.7rem, 3vw, 2.6rem);
-      letter-spacing: 0.3px;
+      font-size: clamp(1.8rem, 2.8vw, 2.8rem);
+      letter-spacing: 0.2px;
     }
 
     .subtitle {
+      margin: 0;
       color: var(--muted);
-      margin: 0 0 12px;
+      max-width: 80ch;
     }
 
-    .writeup {
-      background: rgba(16, 26, 54, 0.8);
-      border: 1px solid rgba(255, 255, 255, 0.09);
-      border-radius: 12px;
-      padding: 14px 16px;
-      margin-bottom: 16px;
-    }
-
-    .writeup p {
-      margin: 6px 0;
-    }
-
-    .controls {
+    .badge-row {
+      margin-top: 12px;
       display: flex;
-      gap: 10px;
       flex-wrap: wrap;
-      align-items: center;
-      margin: 0 0 14px;
+      gap: 8px;
     }
 
-    .controls label {
-      font-size: 0.92rem;
+    .badge {
+      border: 1px solid rgba(255, 255, 255, 0.17);
+      border-radius: 999px;
+      padding: 5px 11px;
+      font-size: 0.82rem;
+      color: #d7e5ff;
+      background: rgba(9, 16, 35, 0.62);
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(280px, 360px) minmax(0, 1fr);
+      gap: 14px;
+      align-items: start;
+    }
+
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: var(--card);
+      padding: 14px;
+      backdrop-filter: blur(4px);
+      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.2);
+      position: sticky;
+      top: 12px;
+    }
+
+    .panel h2 {
+      margin: 0 0 4px;
+      font-size: 1.08rem;
+    }
+
+    .panel p {
+      margin: 0 0 10px;
       color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .meta {
+      border: 1px solid rgba(255, 255, 255, 0.13);
+      border-radius: 12px;
+      padding: 10px;
+      background: rgba(8, 16, 35, 0.54);
+      margin-bottom: 10px;
+      font-size: 0.88rem;
+    }
+
+    .meta p {
+      margin: 5px 0;
+      color: #d6e3ff;
+    }
+
+    .control-label {
+      display: block;
+      color: #c7d5ff;
+      font-size: 0.86rem;
+      margin: 10px 0 6px;
+    }
+
+    .chip-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
     }
 
     .chip {
-      border: 1px solid rgba(255, 255, 255, 0.16);
+      border: 1px solid rgba(255, 255, 255, 0.18);
       border-radius: 999px;
-      background: rgba(7, 13, 31, 0.85);
+      background: rgba(7, 13, 29, 0.85);
       color: var(--ink);
-      padding: 6px 12px;
+      padding: 5px 11px;
+      font-size: 0.84rem;
       cursor: pointer;
-      transition: all 120ms ease;
+      transition: all 130ms ease;
+    }
+
+    .chip:hover {
+      border-color: rgba(197, 216, 255, 0.66);
     }
 
     .chip.active {
-      background: #2b468d;
-      border-color: #8ab4ff;
-      box-shadow: 0 0 0 1px rgba(138, 180, 255, 0.22) inset;
+      background: linear-gradient(140deg, #2855ad, #3f7df5);
+      border-color: #8fbbff;
+      box-shadow: 0 0 0 1px rgba(185, 211, 255, 0.24) inset;
+    }
+
+    .input-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: #8ec5ff;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 9px;
+      background: rgba(4, 10, 22, 0.75);
+      color: #ecf1ff;
+      padding: 7px 10px;
+      font-size: 0.9rem;
+      outline: none;
+    }
+
+    input[type="text"]:focus {
+      border-color: #8ec5ff;
+      box-shadow: 0 0 0 2px rgba(142, 197, 255, 0.2);
     }
 
     .year-readout {
-      color: var(--accent);
-      font-weight: 600;
-      min-width: 62px;
-      display: inline-block;
+      min-width: 58px;
       text-align: right;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .button-row {
+      margin-top: 10px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .action {
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 9px;
+      background: rgba(7, 13, 29, 0.9);
+      color: #ebf1ff;
+      font-size: 0.86rem;
+      padding: 7px 10px;
+      cursor: pointer;
+    }
+
+    .action:hover {
+      border-color: rgba(200, 219, 255, 0.65);
+    }
+
+    .action.primary {
+      background: linear-gradient(145deg, #2968d2, #1f4c99);
+      border-color: #8fb9ff;
+    }
+
+    .stats {
+      margin-top: 10px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .stat {
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 10px;
+      padding: 9px;
+      background: rgba(7, 13, 29, 0.74);
+    }
+
+    .stat .k {
+      color: var(--muted);
+      font-size: 0.76rem;
+    }
+
+    .stat .v {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #f1f6ff;
+    }
+
+    .chart-card {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 10px;
+      background: rgba(11, 22, 49, 0.73);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.24);
+      position: relative;
+      overflow: hidden;
     }
 
     #chart-wrap {
       position: relative;
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.025), rgba(255, 255, 255, 0.01));
-      border: 1px solid rgba(255, 255, 255, 0.11);
-      border-radius: 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.01));
       overflow: hidden;
-      box-shadow: 0 6px 30px rgba(0, 0, 0, 0.25);
+      min-height: 680px;
+    }
+
+    #chart {
+      width: 100%;
+      height: auto;
+      display: block;
     }
 
     #tooltip {
       position: absolute;
       pointer-events: none;
-      z-index: 5;
-      background: rgba(5, 10, 26, 0.94);
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      border-radius: 8px;
+      z-index: 6;
+      background: rgba(4, 10, 24, 0.94);
+      border: 1px solid rgba(159, 186, 255, 0.43);
+      border-radius: 10px;
       padding: 8px 10px;
-      color: #dfe7ff;
-      min-width: 180px;
+      color: #dbe7ff;
+      min-width: 188px;
       opacity: 0;
-      transform: translate(-50%, -120%);
+      transform: translate(-50%, -118%);
       transition: opacity 120ms ease;
-      font-size: 0.85rem;
+      font-size: 0.83rem;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
     }
 
     .legend-row {
+      margin-top: 9px;
       display: flex;
-      gap: 14px;
+      gap: 12px;
       flex-wrap: wrap;
-      margin-top: 10px;
-      color: var(--muted);
-      font-size: 0.86rem;
+      color: #bdd0ff;
+      font-size: 0.82rem;
+      padding-left: 2px;
     }
 
     .legend-item {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
     }
 
     .swatch {
@@ -138,45 +301,117 @@
       border-radius: 3px;
       display: inline-block;
     }
+
+    .footer-note {
+      margin-top: 6px;
+      font-size: 0.8rem;
+      color: #99acd9;
+    }
+
+    @media (max-width: 1020px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .panel {
+        position: static;
+      }
+    }
   </style>
 </head>
 <body>
   <main class="container">
-    <h1>Fossil Echoes: Dinosaurs Through Deep Time</h1>
-    <p class="subtitle">Museum exhibit prototype combining paleobiology, geologic eras, and the modern history of discovery.</p>
-
-    <section class="writeup">
-      <p><strong>Design (marks, channels, interactions):</strong> Each dinosaur is a custom "fossil glyph" (composed mark: body, tail, and spine ticks). Glyph position uses <strong>discovery year (x)</strong> and <strong>geologic period (y stratum)</strong>. Glyph size maps to <strong>mass</strong>, fill color maps to <strong>diet</strong>, outline color maps to <strong>continent</strong>, and spine count maps to <strong>length</strong>. Hover reveals details, diet chips filter the exhibit, and a year slider reveals discoveries over time.</p>
-      <p><strong>Custom visualization category:</strong> <strong>Combinatorial</strong>. This chart combines a stratigraphic timeline backdrop with a custom glyph system to form a new hybrid display, rather than using a single standard chart type.</p>
-      <p><strong>Source modification note:</strong> Built from scratch for this assignment (no direct D3 block modified).</p>
+    <section class="hero">
+      <h1>Fossil Echoes: Dinosaurs Through Deep Time</h1>
+      <p class="subtitle">An interactive museum exhibit that fuses geological layers, paleobiology, and scientific discovery history into one custom visual system.</p>
+      <div class="badge-row">
+        <span class="badge">D3 v7</span>
+        <span class="badge">40 species</span>
+        <span class="badge">6 encoded attributes</span>
+        <span class="badge">Custom class: Combinatorial</span>
+      </div>
     </section>
 
-    <section class="controls">
-      <label>Filter by diet:</label>
-      <button class="chip active" data-diet="All">All</button>
-      <button class="chip" data-diet="Herbivore">Herbivore</button>
-      <button class="chip" data-diet="Carnivore">Carnivore</button>
-      <button class="chip" data-diet="Omnivore">Omnivore</button>
-      <button class="chip" data-diet="Piscivore">Piscivore</button>
-      <label for="yearSlider">Minimum discovery year:</label>
-      <input id="yearSlider" type="range" min="1820" max="2000" step="1" value="1820" />
-      <span class="year-readout" id="yearReadout">1820</span>
-    </section>
+    <section class="layout">
+      <aside class="panel">
+        <h2>Exhibit Guide</h2>
+        <p>Filter and explore how dinosaur forms and discoveries vary across eras.</p>
 
-    <section id="chart-wrap">
-      <svg id="chart" width="1200" height="700" role="img" aria-label="Custom dinosaur fossil exhibit visualization"></svg>
-      <div id="tooltip"></div>
-    </section>
+        <div class="meta">
+          <p><strong>Design:</strong> Composite fossil glyph (body+tail+spines), stratigraphic bands, and discovery timeline.</p>
+          <p><strong>Channels:</strong> x=discovery year, y=period, size=mass, fill=diet, stroke=continent, spine count=length.</p>
+          <p><strong>Custom category:</strong> <strong>Combinatorial</strong> (hybrid of timeline, layered geology, and bespoke glyph encoding).</p>
+          <p><strong>Source note:</strong> Built from scratch (not a direct block copy).</p>
+        </div>
 
-    <section class="legend-row" id="legend"></section>
+        <label class="control-label" for="searchInput">Search dinosaur</label>
+        <input id="searchInput" type="text" placeholder="Type a name (e.g., Triceratops)" aria-label="Search dinosaur name" />
+
+        <label class="control-label">Diet filter</label>
+        <div class="chip-wrap" id="dietChips">
+          <button class="chip active" data-group="diet" data-value="All">All</button>
+          <button class="chip" data-group="diet" data-value="Herbivore">Herbivore</button>
+          <button class="chip" data-group="diet" data-value="Carnivore">Carnivore</button>
+          <button class="chip" data-group="diet" data-value="Omnivore">Omnivore</button>
+          <button class="chip" data-group="diet" data-value="Piscivore">Piscivore</button>
+        </div>
+
+        <label class="control-label">Period filter</label>
+        <div class="chip-wrap" id="periodChips">
+          <button class="chip active" data-group="period" data-value="All">All</button>
+          <button class="chip" data-group="period" data-value="Triassic">Triassic</button>
+          <button class="chip" data-group="period" data-value="Jurassic">Jurassic</button>
+          <button class="chip" data-group="period" data-value="Cretaceous">Cretaceous</button>
+        </div>
+
+        <label class="control-label" for="yearSlider">Minimum discovery year</label>
+        <div class="input-row">
+          <input id="yearSlider" type="range" min="1820" max="2000" step="1" value="1820" />
+          <span class="year-readout" id="yearReadout">1820</span>
+        </div>
+
+        <div class="button-row">
+          <button class="action primary" id="playBtn" type="button">Play timeline</button>
+          <button class="action" id="resetBtn" type="button">Reset filters</button>
+        </div>
+
+        <section class="stats" id="stats">
+          <article class="stat">
+            <div class="k">Visible species</div>
+            <div class="v" id="statCount">0</div>
+          </article>
+          <article class="stat">
+            <div class="k">Average mass (t)</div>
+            <div class="v" id="statMass">0</div>
+          </article>
+          <article class="stat">
+            <div class="k">Average length (m)</div>
+            <div class="v" id="statLength">0</div>
+          </article>
+          <article class="stat">
+            <div class="k">Most common diet</div>
+            <div class="v" id="statDiet">-</div>
+          </article>
+        </section>
+      </aside>
+
+      <section class="chart-card">
+        <div id="chart-wrap">
+          <svg id="chart" viewBox="0 0 1200 730" role="img" aria-label="Custom dinosaur fossil exhibit visualization"></svg>
+          <div id="tooltip"></div>
+        </div>
+        <section class="legend-row" id="legend"></section>
+        <p class="footer-note">Tip: Hover any fossil glyph for full details. Use Play timeline for a guided reveal effect.</p>
+      </section>
+    </section>
   </main>
 
   <script>
     const svg = d3.select("#chart");
     const tooltip = d3.select("#tooltip");
     const width = 1200;
-    const height = 700;
-    const margin = { top: 56, right: 40, bottom: 70, left: 170 };
+    const height = 730;
+    const margin = { top: 72, right: 42, bottom: 84, left: 170 };
     const innerW = width - margin.left - margin.right;
     const innerH = height - margin.top - margin.bottom;
 
@@ -184,16 +419,45 @@
     const periods = ["Triassic", "Jurassic", "Cretaceous"];
     const dietColor = d3.scaleOrdinal()
       .domain(diets)
-      .range(["#77dd77", "#ff6b6b", "#f2c14e", "#5bc0eb"]);
+      .range(["#7ef7a7", "#ff6b7e", "#ffd166", "#6dd8ff"]);
     const continentColor = d3.scaleOrdinal()
       .domain(["North America", "South America", "Europe", "Africa", "Asia"])
-      .range(["#7aa5ff", "#b197fc", "#8ce99a", "#ffa94d", "#66d9e8"]);
+      .range(["#81b7ff", "#c19bff", "#95ecad", "#ffa86a", "#7ce3ea"]);
+
+    const defs = svg.append("defs");
+    defs.append("filter")
+      .attr("id", "glow")
+      .append("feDropShadow")
+      .attr("dx", 0)
+      .attr("dy", 0)
+      .attr("stdDeviation", 2.2)
+      .attr("flood-color", "#8ec5ff")
+      .attr("flood-opacity", 0.4);
 
     const root = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+    const gridLayer = root.append("g");
     const strataLayer = root.append("g");
     const axisLayer = root.append("g");
     const glyphLayer = root.append("g");
     const labelsLayer = root.append("g");
+    const focusLayer = root.append("g");
+
+    const focusLine = focusLayer.append("line")
+      .attr("y1", 0)
+      .attr("y2", innerH)
+      .attr("stroke", "rgba(188, 213, 255, 0.4)")
+      .attr("stroke-width", 1.2)
+      .attr("stroke-dasharray", "5 4")
+      .style("opacity", 0);
+
+    const state = {
+      selectedDiet: "All",
+      selectedPeriod: "All",
+      minYear: 1820,
+      search: "",
+      timer: null,
+      data: []
+    };
 
     function fossilPath(scale) {
       const body = [
@@ -202,27 +466,67 @@
       return d3.line().curve(d3.curveCatmullRomClosed.alpha(0.7))(body);
     }
 
-    function render(data, selectedDiet, minYear) {
+    function dominantDiet(rows) {
+      if (!rows.length) return "-";
+      const map = d3.rollups(rows, v => v.length, d => d.diet).sort((a, b) => d3.descending(a[1], b[1]));
+      return map[0][0];
+    }
+
+    function updateStats(rows) {
+      d3.select("#statCount").text(rows.length);
+      d3.select("#statMass").text(rows.length ? d3.format(".2f")(d3.mean(rows, d => d.mass_tonnes)) : "0");
+      d3.select("#statLength").text(rows.length ? d3.format(".1f")(d3.mean(rows, d => d.length_m)) : "0");
+      d3.select("#statDiet").text(dominantDiet(rows));
+    }
+
+    function getFilteredData(allRows) {
+      const q = state.search.trim().toLowerCase();
+      return allRows.filter(d => {
+        const dietMatch = state.selectedDiet === "All" || d.diet === state.selectedDiet;
+        const periodMatch = state.selectedPeriod === "All" || d.period === state.selectedPeriod;
+        const yearMatch = d.discovery_year >= state.minYear;
+        const nameMatch = !q || d.name.toLowerCase().includes(q);
+        return dietMatch && periodMatch && yearMatch && nameMatch;
+      });
+    }
+
+    function render(allRows) {
       const x = d3.scaleLinear()
-        .domain(d3.extent(data, d => d.discovery_year))
+        .domain(d3.extent(allRows, d => d.discovery_year))
         .nice()
         .range([0, innerW]);
 
       const y = d3.scaleBand()
         .domain(periods)
         .range([0, innerH])
-        .paddingInner(0.14)
+        .paddingInner(0.13)
         .paddingOuter(0.08);
 
-      const massExtent = d3.extent(data, d => d.mass_tonnes);
-      const size = d3.scaleSqrt().domain(massExtent).range([0.45, 2.0]);
+      const massExtent = d3.extent(allRows, d => d.mass_tonnes);
+      const size = d3.scaleSqrt().domain(massExtent).range([0.44, 2.08]);
       const jitter = d3.randomNormal.source(d3.randomLcg(0.42))(0, 13);
 
+      const filtered = getFilteredData(allRows);
+      updateStats(filtered);
+
+      gridLayer.selectAll("*").remove();
       strataLayer.selectAll("*").remove();
       axisLayer.selectAll("*").remove();
       labelsLayer.selectAll("*").remove();
 
-      const strataColors = ["#5f4b8b66", "#2a9d8f55", "#e76f5155"];
+      gridLayer.append("g")
+        .selectAll("line.grid")
+        .data(x.ticks(12))
+        .join("line")
+        .attr("class", "grid")
+        .attr("x1", d => x(d))
+        .attr("x2", d => x(d))
+        .attr("y1", 0)
+        .attr("y2", innerH)
+        .attr("stroke", "rgba(185, 208, 255, 0.13)")
+        .attr("stroke-width", 1);
+
+      const strataColors = ["#6f5cc466", "#2ea89c55", "#ec7d5857"];
       strataLayer.selectAll("rect.strata")
         .data(periods)
         .join("rect")
@@ -232,44 +536,51 @@
         .attr("width", innerW + 36)
         .attr("height", y.bandwidth())
         .attr("fill", (d, i) => strataColors[i])
-        .attr("rx", 6);
+        .attr("stroke", "rgba(240,245,255,0.12)")
+        .attr("stroke-width", 1)
+        .attr("rx", 8);
 
       strataLayer.selectAll("text.period-label")
         .data(periods)
         .join("text")
         .attr("class", "period-label")
-        .attr("x", -28)
+        .attr("x", -26)
         .attr("y", d => y(d) + y.bandwidth() / 2)
         .attr("text-anchor", "end")
         .attr("dominant-baseline", "middle")
         .attr("font-size", 14)
         .attr("font-weight", 700)
-        .attr("fill", "#d4dcff")
+        .attr("fill", "#dbe6ff")
         .text(d => d);
 
       axisLayer.append("g")
-        .attr("transform", `translate(0,${innerH + 8})`)
-        .call(d3.axisBottom(x).ticks(10).tickFormat(d3.format("d")))
-        .call(g => g.selectAll("line,path").attr("stroke", "#7f8cbb"))
-        .call(g => g.selectAll("text").attr("fill", "#ced7ff"));
+        .attr("transform", `translate(0,${innerH + 10})`)
+        .call(d3.axisBottom(x).ticks(11).tickFormat(d3.format("d")))
+        .call(g => g.selectAll("line,path").attr("stroke", "rgba(186,206,255,0.58)"))
+        .call(g => g.selectAll("text").attr("fill", "#d8e4ff"));
 
       axisLayer.append("text")
         .attr("x", innerW / 2)
-        .attr("y", innerH + 46)
+        .attr("y", innerH + 48)
         .attr("text-anchor", "middle")
-        .attr("fill", "#cfd7ff")
+        .attr("fill", "#d8e4ff")
         .attr("font-size", 13)
         .text("Year of Scientific Discovery");
 
       labelsLayer.append("text")
         .attr("x", 0)
-        .attr("y", -20)
-        .attr("fill", "#f3f6ff")
-        .attr("font-size", 18)
+        .attr("y", -28)
+        .attr("fill", "#f5f8ff")
+        .attr("font-size", 20)
         .attr("font-weight", 700)
-        .text("Dinosaur Fossil Glyph Field");
+        .text("Fossil Glyph Field");
 
-      const filtered = data.filter(d => (selectedDiet === "All" || d.diet === selectedDiet) && d.discovery_year >= minYear);
+      labelsLayer.append("text")
+        .attr("x", 0)
+        .attr("y", -8)
+        .attr("fill", "#bcd0ff")
+        .attr("font-size", 12.4)
+        .text("Each glyph encodes diet, continent, mass, length, geologic period, and discovery year.");
 
       const points = glyphLayer.selectAll("g.fossil")
         .data(filtered, d => d.name)
@@ -284,16 +595,17 @@
               .attr("class", "tail")
               .attr("d", d => {
                 const s = size(d.mass_tonnes);
-                return `M ${-23 * s} 0 L ${-39 * s} ${-6 * s} L ${-36 * s} ${4 * s} Z`;
+                return `M ${-24 * s} 0 L ${-41 * s} ${-7 * s} L ${-37 * s} ${5 * s} Z`;
               })
-              .attr("fill", d => d3.color(dietColor(d.diet)).darker(0.7));
+              .attr("fill", d => d3.color(dietColor(d.diet)).darker(0.8));
 
             g.append("path")
               .attr("class", "body")
               .attr("d", d => fossilPath(size(d.mass_tonnes)))
               .attr("fill", d => dietColor(d.diet))
               .attr("stroke", d => continentColor(d.continent))
-              .attr("stroke-width", 2);
+              .attr("stroke-width", 2.1)
+              .attr("filter", "url(#glow)");
 
             g.each(function(d) {
               const s = size(d.mass_tonnes);
@@ -306,15 +618,12 @@
                   .attr("y1", -4 * s)
                   .attr("x2", -9 * s + i * spacing)
                   .attr("y2", -11 * s)
-                  .attr("stroke", "#f4f8ff")
+                  .attr("stroke", "#f5f9ff")
                   .attr("stroke-width", 1.1);
               }
             });
 
-            g.transition()
-              .duration(420)
-              .attr("opacity", 0.95);
-
+            g.transition().duration(420).attr("opacity", 0.95);
             return g;
           },
           update => update
@@ -331,7 +640,10 @@
 
       points
         .on("mousemove", function(event, d) {
+          const [mx] = d3.pointer(event, root.node());
+          focusLine.attr("x1", mx).attr("x2", mx).style("opacity", 1);
           d3.select(this).raise().attr("opacity", 1);
+
           tooltip
             .style("opacity", 1)
             .style("left", `${event.offsetX}px`)
@@ -349,20 +661,94 @@
         .on("mouseleave", function() {
           d3.select(this).attr("opacity", 0.95);
           tooltip.style("opacity", 0);
+          focusLine.style("opacity", 0);
         });
     }
 
     function renderLegend() {
       const legend = d3.select("#legend");
+      legend.selectAll("*").remove();
       legend.append("span").text("Diet:");
       diets.forEach(diet => {
         const item = legend.append("span").attr("class", "legend-item");
         item.append("span").attr("class", "swatch").style("background", dietColor(diet));
         item.append("span").text(diet);
       });
-      legend.append("span").style("margin-left", "10px").text("Outline = continent");
-      legend.append("span").style("margin-left", "10px").text("Size = mass");
-      legend.append("span").style("margin-left", "10px").text("Spine ticks = length");
+      legend.append("span").style("margin-left", "10px").text("outline = continent");
+      legend.append("span").style("margin-left", "10px").text("size = mass");
+      legend.append("span").style("margin-left", "10px").text("spine ticks = length");
+    }
+
+    function setChipState(group, value) {
+      d3.selectAll(`.chip[data-group='${group}']`).classed("active", false);
+      d3.select(`.chip[data-group='${group}'][data-value='${value}']`).classed("active", true);
+    }
+
+    function bindControls() {
+      d3.selectAll(".chip").on("click", function() {
+        const group = d3.select(this).attr("data-group");
+        const value = d3.select(this).attr("data-value");
+        if (group === "diet") state.selectedDiet = value;
+        if (group === "period") state.selectedPeriod = value;
+        setChipState(group, value);
+        render(state.data);
+      });
+
+      d3.select("#yearSlider").on("input", function() {
+        state.minYear = +this.value;
+        d3.select("#yearReadout").text(state.minYear);
+        render(state.data);
+      });
+
+      d3.select("#searchInput").on("input", function() {
+        state.search = this.value;
+        render(state.data);
+      });
+
+      d3.select("#resetBtn").on("click", function() {
+        if (state.timer) {
+          clearInterval(state.timer);
+          state.timer = null;
+          d3.select("#playBtn").text("Play timeline");
+        }
+        state.selectedDiet = "All";
+        state.selectedPeriod = "All";
+        state.minYear = 1820;
+        state.search = "";
+        d3.select("#searchInput").property("value", "");
+        d3.select("#yearSlider").property("value", 1820);
+        d3.select("#yearReadout").text("1820");
+        setChipState("diet", "All");
+        setChipState("period", "All");
+        render(state.data);
+      });
+
+      d3.select("#playBtn").on("click", function() {
+        if (state.timer) {
+          clearInterval(state.timer);
+          state.timer = null;
+          d3.select(this).text("Play timeline");
+          return;
+        }
+        d3.select(this).text("Pause timeline");
+        state.minYear = 1820;
+        d3.select("#yearSlider").property("value", 1820);
+        d3.select("#yearReadout").text("1820");
+        render(state.data);
+
+        state.timer = setInterval(() => {
+          if (state.minYear >= 2000) {
+            clearInterval(state.timer);
+            state.timer = null;
+            d3.select("#playBtn").text("Play timeline");
+            return;
+          }
+          state.minYear += 2;
+          d3.select("#yearSlider").property("value", state.minYear);
+          d3.select("#yearReadout").text(state.minYear);
+          render(state.data);
+        }, 150);
+      });
     }
 
     d3.csv("data/dinosaurs_exhibit.csv", d => ({
@@ -374,26 +760,10 @@
       continent: d.continent,
       discovery_year: +d.discovery_year
     })).then(data => {
+      state.data = data;
       renderLegend();
-
-      let selectedDiet = "All";
-      let minYear = 1820;
-      render(data, selectedDiet, minYear);
-
-      const chips = d3.selectAll(".chip");
-      chips.on("click", function() {
-        selectedDiet = d3.select(this).attr("data-diet");
-        chips.classed("active", false);
-        d3.select(this).classed("active", true);
-        render(data, selectedDiet, minYear);
-      });
-
-      const slider = d3.select("#yearSlider");
-      slider.on("input", function() {
-        minYear = +this.value;
-        d3.select("#yearReadout").text(minYear);
-        render(data, selectedDiet, minYear);
-      });
+      bindControls();
+      render(data);
     });
   </script>
 </body>
