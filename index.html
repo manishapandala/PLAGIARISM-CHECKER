@@ -1,57 +1,400 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AI Plagiarism Checker</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            fontFamily: {
-              sans: ['Inter', 'sans-serif'],
-            },
-            colors: {
-              primary: {
-                DEFAULT: '#4f46e5',
-                '50': '#eef2ff',
-                '100': '#e0e7ff',
-                '200': '#c7d2fe',
-                '300': '#a5b4fc',
-                '400': '#818cf8',
-                '500': '#6366f1',
-                '600': '#4f46e5',
-                '700': '#4338ca',
-                '800': '#3730a3',
-                '900': '#312e81',
-                '950': '#1e1b4b',
-              },
-            }
-          }
-        }
-      }
-    </script>
-<script type="importmap">
-{
-  "imports": {
-    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.27.0",
-    "react": "https://aistudiocdn.com/react@^19.2.0",
-    "react/": "https://aistudiocdn.com/react@^19.2.0/",
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
-    "recharts": "https://aistudiocdn.com/recharts@^3.3.0",
-    "pdfjs-dist": "https://aistudiocdn.com/pdfjs-dist@^4.6.0",
-    "mammoth": "https://aistudiocdn.com/mammoth@^1.8.0"
-  }
-}
-</script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fossil Echoes Museum Exhibit</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <style>
+    :root {
+      --bg: #0a0f1f;
+      --card: #101a36;
+      --ink: #e6ebff;
+      --muted: #96a4d7;
+      --accent: #f2c14e;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--ink);
+      background: radial-gradient(circle at 10% 5%, #1d2e5d 0%, var(--bg) 50%);
+      min-height: 100vh;
+      line-height: 1.45;
+    }
+
+    .container {
+      width: min(1200px, 95vw);
+      margin: 24px auto 40px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: clamp(1.7rem, 3vw, 2.6rem);
+      letter-spacing: 0.3px;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      margin: 0 0 12px;
+    }
+
+    .writeup {
+      background: rgba(16, 26, 54, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 16px;
+    }
+
+    .writeup p {
+      margin: 6px 0;
+    }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin: 0 0 14px;
+    }
+
+    .controls label {
+      font-size: 0.92rem;
+      color: var(--muted);
+    }
+
+    .chip {
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 999px;
+      background: rgba(7, 13, 31, 0.85);
+      color: var(--ink);
+      padding: 6px 12px;
+      cursor: pointer;
+      transition: all 120ms ease;
+    }
+
+    .chip.active {
+      background: #2b468d;
+      border-color: #8ab4ff;
+      box-shadow: 0 0 0 1px rgba(138, 180, 255, 0.22) inset;
+    }
+
+    .year-readout {
+      color: var(--accent);
+      font-weight: 600;
+      min-width: 62px;
+      display: inline-block;
+      text-align: right;
+    }
+
+    #chart-wrap {
+      position: relative;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.025), rgba(255, 255, 255, 0.01));
+      border: 1px solid rgba(255, 255, 255, 0.11);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 6px 30px rgba(0, 0, 0, 0.25);
+    }
+
+    #tooltip {
+      position: absolute;
+      pointer-events: none;
+      z-index: 5;
+      background: rgba(5, 10, 26, 0.94);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 8px;
+      padding: 8px 10px;
+      color: #dfe7ff;
+      min-width: 180px;
+      opacity: 0;
+      transform: translate(-50%, -120%);
+      transition: opacity 120ms ease;
+      font-size: 0.85rem;
+    }
+
+    .legend-row {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 0.86rem;
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .swatch {
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+      display: inline-block;
+    }
+  </style>
 </head>
-<body class="bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-200">
-    <div id="root"></div>
-    <script type="module" src="/index.tsx"></script>
+<body>
+  <main class="container">
+    <h1>Fossil Echoes: Dinosaurs Through Deep Time</h1>
+    <p class="subtitle">Museum exhibit prototype combining paleobiology, geologic eras, and the modern history of discovery.</p>
+
+    <section class="writeup">
+      <p><strong>Design (marks, channels, interactions):</strong> Each dinosaur is a custom "fossil glyph" (composed mark: body, tail, and spine ticks). Glyph position uses <strong>discovery year (x)</strong> and <strong>geologic period (y stratum)</strong>. Glyph size maps to <strong>mass</strong>, fill color maps to <strong>diet</strong>, outline color maps to <strong>continent</strong>, and spine count maps to <strong>length</strong>. Hover reveals details, diet chips filter the exhibit, and a year slider reveals discoveries over time.</p>
+      <p><strong>Custom visualization category:</strong> <strong>Combinatorial</strong>. This chart combines a stratigraphic timeline backdrop with a custom glyph system to form a new hybrid display, rather than using a single standard chart type.</p>
+      <p><strong>Source modification note:</strong> Built from scratch for this assignment (no direct D3 block modified).</p>
+    </section>
+
+    <section class="controls">
+      <label>Filter by diet:</label>
+      <button class="chip active" data-diet="All">All</button>
+      <button class="chip" data-diet="Herbivore">Herbivore</button>
+      <button class="chip" data-diet="Carnivore">Carnivore</button>
+      <button class="chip" data-diet="Omnivore">Omnivore</button>
+      <button class="chip" data-diet="Piscivore">Piscivore</button>
+      <label for="yearSlider">Minimum discovery year:</label>
+      <input id="yearSlider" type="range" min="1820" max="2000" step="1" value="1820" />
+      <span class="year-readout" id="yearReadout">1820</span>
+    </section>
+
+    <section id="chart-wrap">
+      <svg id="chart" width="1200" height="700" role="img" aria-label="Custom dinosaur fossil exhibit visualization"></svg>
+      <div id="tooltip"></div>
+    </section>
+
+    <section class="legend-row" id="legend"></section>
+  </main>
+
+  <script>
+    const svg = d3.select("#chart");
+    const tooltip = d3.select("#tooltip");
+    const width = 1200;
+    const height = 700;
+    const margin = { top: 56, right: 40, bottom: 70, left: 170 };
+    const innerW = width - margin.left - margin.right;
+    const innerH = height - margin.top - margin.bottom;
+
+    const diets = ["Herbivore", "Carnivore", "Omnivore", "Piscivore"];
+    const periods = ["Triassic", "Jurassic", "Cretaceous"];
+    const dietColor = d3.scaleOrdinal()
+      .domain(diets)
+      .range(["#77dd77", "#ff6b6b", "#f2c14e", "#5bc0eb"]);
+    const continentColor = d3.scaleOrdinal()
+      .domain(["North America", "South America", "Europe", "Africa", "Asia"])
+      .range(["#7aa5ff", "#b197fc", "#8ce99a", "#ffa94d", "#66d9e8"]);
+
+    const root = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+    const strataLayer = root.append("g");
+    const axisLayer = root.append("g");
+    const glyphLayer = root.append("g");
+    const labelsLayer = root.append("g");
+
+    function fossilPath(scale) {
+      const body = [
+        [-20, 0], [-8, -12], [15, -10], [24, 0], [12, 11], [-10, 12]
+      ].map(([x, y]) => [x * scale, y * scale]);
+      return d3.line().curve(d3.curveCatmullRomClosed.alpha(0.7))(body);
+    }
+
+    function render(data, selectedDiet, minYear) {
+      const x = d3.scaleLinear()
+        .domain(d3.extent(data, d => d.discovery_year))
+        .nice()
+        .range([0, innerW]);
+
+      const y = d3.scaleBand()
+        .domain(periods)
+        .range([0, innerH])
+        .paddingInner(0.14)
+        .paddingOuter(0.08);
+
+      const massExtent = d3.extent(data, d => d.mass_tonnes);
+      const size = d3.scaleSqrt().domain(massExtent).range([0.45, 2.0]);
+      const jitter = d3.randomNormal.source(d3.randomLcg(0.42))(0, 13);
+
+      strataLayer.selectAll("*").remove();
+      axisLayer.selectAll("*").remove();
+      labelsLayer.selectAll("*").remove();
+
+      const strataColors = ["#5f4b8b66", "#2a9d8f55", "#e76f5155"];
+      strataLayer.selectAll("rect.strata")
+        .data(periods)
+        .join("rect")
+        .attr("class", "strata")
+        .attr("x", -18)
+        .attr("y", d => y(d))
+        .attr("width", innerW + 36)
+        .attr("height", y.bandwidth())
+        .attr("fill", (d, i) => strataColors[i])
+        .attr("rx", 6);
+
+      strataLayer.selectAll("text.period-label")
+        .data(periods)
+        .join("text")
+        .attr("class", "period-label")
+        .attr("x", -28)
+        .attr("y", d => y(d) + y.bandwidth() / 2)
+        .attr("text-anchor", "end")
+        .attr("dominant-baseline", "middle")
+        .attr("font-size", 14)
+        .attr("font-weight", 700)
+        .attr("fill", "#d4dcff")
+        .text(d => d);
+
+      axisLayer.append("g")
+        .attr("transform", `translate(0,${innerH + 8})`)
+        .call(d3.axisBottom(x).ticks(10).tickFormat(d3.format("d")))
+        .call(g => g.selectAll("line,path").attr("stroke", "#7f8cbb"))
+        .call(g => g.selectAll("text").attr("fill", "#ced7ff"));
+
+      axisLayer.append("text")
+        .attr("x", innerW / 2)
+        .attr("y", innerH + 46)
+        .attr("text-anchor", "middle")
+        .attr("fill", "#cfd7ff")
+        .attr("font-size", 13)
+        .text("Year of Scientific Discovery");
+
+      labelsLayer.append("text")
+        .attr("x", 0)
+        .attr("y", -20)
+        .attr("fill", "#f3f6ff")
+        .attr("font-size", 18)
+        .attr("font-weight", 700)
+        .text("Dinosaur Fossil Glyph Field");
+
+      const filtered = data.filter(d => (selectedDiet === "All" || d.diet === selectedDiet) && d.discovery_year >= minYear);
+
+      const points = glyphLayer.selectAll("g.fossil")
+        .data(filtered, d => d.name)
+        .join(
+          enter => {
+            const g = enter.append("g")
+              .attr("class", "fossil")
+              .attr("opacity", 0)
+              .attr("transform", d => `translate(${x(d.discovery_year)},${y(d.period) + y.bandwidth() / 2 + jitter()})`);
+
+            g.append("path")
+              .attr("class", "tail")
+              .attr("d", d => {
+                const s = size(d.mass_tonnes);
+                return `M ${-23 * s} 0 L ${-39 * s} ${-6 * s} L ${-36 * s} ${4 * s} Z`;
+              })
+              .attr("fill", d => d3.color(dietColor(d.diet)).darker(0.7));
+
+            g.append("path")
+              .attr("class", "body")
+              .attr("d", d => fossilPath(size(d.mass_tonnes)))
+              .attr("fill", d => dietColor(d.diet))
+              .attr("stroke", d => continentColor(d.continent))
+              .attr("stroke-width", 2);
+
+            g.each(function(d) {
+              const s = size(d.mass_tonnes);
+              const ticks = Math.max(2, Math.min(8, Math.round(d.length_m / 4)));
+              const spacing = (22 * s) / (ticks - 1);
+              const spine = d3.select(this).append("g").attr("class", "spine");
+              for (let i = 0; i < ticks; i += 1) {
+                spine.append("line")
+                  .attr("x1", -10 * s + i * spacing)
+                  .attr("y1", -4 * s)
+                  .attr("x2", -9 * s + i * spacing)
+                  .attr("y2", -11 * s)
+                  .attr("stroke", "#f4f8ff")
+                  .attr("stroke-width", 1.1);
+              }
+            });
+
+            g.transition()
+              .duration(420)
+              .attr("opacity", 0.95);
+
+            return g;
+          },
+          update => update
+            .transition()
+            .duration(380)
+            .attr("opacity", 0.95)
+            .attr("transform", d => `translate(${x(d.discovery_year)},${y(d.period) + y.bandwidth() / 2 + jitter()})`)
+            .select(".body")
+            .attr("fill", d => dietColor(d.diet))
+            .attr("stroke", d => continentColor(d.continent))
+            .attr("d", d => fossilPath(size(d.mass_tonnes))),
+          exit => exit.transition().duration(220).attr("opacity", 0).remove()
+        );
+
+      points
+        .on("mousemove", function(event, d) {
+          d3.select(this).raise().attr("opacity", 1);
+          tooltip
+            .style("opacity", 1)
+            .style("left", `${event.offsetX}px`)
+            .style("top", `${event.offsetY}px`)
+            .html(
+              `<strong>${d.name}</strong><br/>` +
+              `Period: ${d.period}<br/>` +
+              `Diet: ${d.diet}<br/>` +
+              `Length: ${d.length_m} m<br/>` +
+              `Mass: ${d.mass_tonnes} tonnes<br/>` +
+              `Continent: ${d.continent}<br/>` +
+              `Discovery: ${d.discovery_year}`
+            );
+        })
+        .on("mouseleave", function() {
+          d3.select(this).attr("opacity", 0.95);
+          tooltip.style("opacity", 0);
+        });
+    }
+
+    function renderLegend() {
+      const legend = d3.select("#legend");
+      legend.append("span").text("Diet:");
+      diets.forEach(diet => {
+        const item = legend.append("span").attr("class", "legend-item");
+        item.append("span").attr("class", "swatch").style("background", dietColor(diet));
+        item.append("span").text(diet);
+      });
+      legend.append("span").style("margin-left", "10px").text("Outline = continent");
+      legend.append("span").style("margin-left", "10px").text("Size = mass");
+      legend.append("span").style("margin-left", "10px").text("Spine ticks = length");
+    }
+
+    d3.csv("data/dinosaurs_exhibit.csv", d => ({
+      name: d.name,
+      period: d.period,
+      diet: d.diet,
+      length_m: +d.length_m,
+      mass_tonnes: +d.mass_tonnes,
+      continent: d.continent,
+      discovery_year: +d.discovery_year
+    })).then(data => {
+      renderLegend();
+
+      let selectedDiet = "All";
+      let minYear = 1820;
+      render(data, selectedDiet, minYear);
+
+      const chips = d3.selectAll(".chip");
+      chips.on("click", function() {
+        selectedDiet = d3.select(this).attr("data-diet");
+        chips.classed("active", false);
+        d3.select(this).classed("active", true);
+        render(data, selectedDiet, minYear);
+      });
+
+      const slider = d3.select("#yearSlider");
+      slider.on("input", function() {
+        minYear = +this.value;
+        d3.select("#yearReadout").text(minYear);
+        render(data, selectedDiet, minYear);
+      });
+    });
+  </script>
 </body>
 </html>
