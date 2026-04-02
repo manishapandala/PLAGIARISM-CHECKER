@@ -463,6 +463,7 @@
   <div id="tooltip"></div>
 
   <script>
+    const tooltip = d3.select("#tooltip");
     const accent = "#e7a96b";
     const accentSoft = "#f5ddc4";
     const dark = "#52525a";
@@ -477,6 +478,18 @@
 
     function fmt(n, d = 2) {
       return Number.isFinite(n) ? d3.format(`,.${d}f`)(n) : "-";
+    }
+
+    function showTooltip(event, html) {
+      tooltip
+        .style("opacity", 1)
+        .style("left", `${event.clientX + 12}px`)
+        .style("top", `${event.clientY + 12}px`)
+        .html(html);
+    }
+
+    function hideTooltip() {
+      tooltip.style("opacity", 0);
     }
 
     function isHighRisk(d) {
@@ -568,7 +581,11 @@
         .attr("y", d => y(d[1]))
         .attr("width", x.bandwidth())
         .attr("height", d => h - y(d[1]))
-        .attr("fill", accent);
+        .attr("fill", accent)
+        .on("mousemove", (event, d) => {
+          showTooltip(event, `<strong>${d[0]}</strong><br/>Comets: ${d[1]}`);
+        })
+        .on("mouseleave", hideTooltip);
     }
 
     function renderRiskDonut(rows) {
@@ -610,7 +627,11 @@
         .attr("y", d => y(d.c))
         .attr("width", x.bandwidth())
         .attr("height", d => h - y(d.c))
-        .attr("fill", dark);
+        .attr("fill", dark)
+        .on("mousemove", (event, d) => {
+          showTooltip(event, `<strong>${d.k} km/s</strong><br/>Comets: ${d.c}`);
+        })
+        .on("mouseleave", hideTooltip);
     }
 
     function renderBrightness(rows) {
@@ -633,7 +654,11 @@
       g.selectAll("rect").data(groups).join("rect")
         .attr("x", 0).attr("y", d => y(d.k))
         .attr("width", d => x(d.c)).attr("height", y.bandwidth())
-        .attr("fill", accent);
+        .attr("fill", accent)
+        .on("mousemove", (event, d) => {
+          showTooltip(event, `<strong>${d.k}</strong><br/>Comets: ${d.c}`);
+        })
+        .on("mouseleave", hideTooltip);
       g.selectAll("text.v").data(groups).join("text")
         .attr("x", d => x(d.c) + 4).attr("y", d => y(d.k) + y.bandwidth() / 2 + 3)
         .attr("font-size", 9).attr("fill", "#666671").text(d => d.c);
@@ -665,7 +690,12 @@
           tr.append("td")
             .style("background", d3.interpolateRgb("#f8f8fc", accentSoft)(intensity))
             .style("color", "#555560")
-            .text(v);
+            .text(v)
+            .on("mousemove", (event) => {
+              const label = columns[counts.indexOf(v)];
+              showTooltip(event, `<strong>${pt}</strong><br/>Risk band: ${label}<br/>Comets: ${v}`);
+            })
+            .on("mouseleave", hideTooltip);
         });
       });
     }
