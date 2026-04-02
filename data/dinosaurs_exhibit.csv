@@ -1,0 +1,41 @@
+name,period,diet,length_m,mass_tonnes,continent,discovery_year
+Coelophysis,Triassic,Carnivore,3.0,0.02,North America,1889
+Plateosaurus,Triassic,Herbivore,10.0,4.00,Europe,1837
+Herrerasaurus,Triassic,Carnivore,6.0,0.35,South America,1961
+Eoraptor,Triassic,Omnivore,1.0,0.01,South America,1993
+Riojasaurus,Triassic,Herbivore,10.0,3.00,South America,1969
+Liliensternus,Triassic,Carnivore,5.2,0.12,Europe,1934
+Mussaurus,Triassic,Herbivore,4.0,0.08,South America,1979
+Melanorosaurus,Triassic,Herbivore,8.0,1.30,Africa,1924
+Saturnalia,Triassic,Omnivore,1.5,0.02,South America,1999
+Thecodontosaurus,Triassic,Herbivore,2.5,0.03,Europe,1836
+Staurikosaurus,Triassic,Carnivore,2.2,0.03,South America,1970
+Efraasia,Triassic,Herbivore,6.0,0.50,Europe,1907
+Allosaurus,Jurassic,Carnivore,8.5,2.00,North America,1877
+Stegosaurus,Jurassic,Herbivore,9.0,5.30,North America,1877
+Brachiosaurus,Jurassic,Herbivore,22.0,35.00,North America,1903
+Diplodocus,Jurassic,Herbivore,24.0,15.00,North America,1878
+Archaeopteryx,Jurassic,Carnivore,0.5,0.001,Europe,1861
+Compsognathus,Jurassic,Carnivore,1.0,0.003,Europe,1859
+Camarasaurus,Jurassic,Herbivore,18.0,20.00,North America,1877
+Ceratosaurus,Jurassic,Carnivore,6.0,1.00,North America,1884
+Dryosaurus,Jurassic,Herbivore,4.0,0.08,North America,1878
+Mamenchisaurus,Jurassic,Herbivore,22.0,25.00,Asia,1952
+Yangchuanosaurus,Jurassic,Carnivore,10.0,3.40,Asia,1978
+Lesothosaurus,Jurassic,Herbivore,1.0,0.01,Africa,1978
+Tyrannosaurus rex,Cretaceous,Carnivore,12.3,8.40,North America,1905
+Triceratops,Cretaceous,Herbivore,9.0,7.70,North America,1887
+Velociraptor,Cretaceous,Carnivore,2.1,0.015,Asia,1924
+Spinosaurus,Cretaceous,Piscivore,15.0,7.50,Africa,1912
+Ankylosaurus,Cretaceous,Herbivore,6.5,6.00,North America,1908
+Parasaurolophus,Cretaceous,Herbivore,9.5,2.50,North America,1922
+Iguanodon,Cretaceous,Herbivore,10.0,3.50,Europe,1825
+Carnotaurus,Cretaceous,Carnivore,8.0,1.50,South America,1984
+Argentinosaurus,Cretaceous,Herbivore,30.0,70.00,South America,1993
+Giganotosaurus,Cretaceous,Carnivore,13.0,8.00,South America,1995
+Oviraptor,Cretaceous,Omnivore,2.0,0.03,Asia,1924
+Therizinosaurus,Cretaceous,Herbivore,10.0,5.00,Asia,1954
+Majungasaurus,Cretaceous,Carnivore,7.0,1.10,Africa,1896
+Ouranosaurus,Cretaceous,Herbivore,7.0,1.50,Africa,1966
+Microraptor,Cretaceous,Carnivore,1.2,0.002,Asia,2000
+Pachycephalosaurus,Cretaceous,Omnivore,4.5,0.45,North America,1931

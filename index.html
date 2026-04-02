@@ -1,57 +1,772 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AI Plagiarism Checker</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            fontFamily: {
-              sans: ['Inter', 'sans-serif'],
-            },
-            colors: {
-              primary: {
-                DEFAULT: '#4f46e5',
-                '50': '#eef2ff',
-                '100': '#e0e7ff',
-                '200': '#c7d2fe',
-                '300': '#a5b4fc',
-                '400': '#818cf8',
-                '500': '#6366f1',
-                '600': '#4f46e5',
-                '700': '#4338ca',
-                '800': '#3730a3',
-                '900': '#312e81',
-                '950': '#1e1b4b',
-              },
-            }
-          }
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Comet Attrition Dashboard</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <style>
+    :root {
+      --bg: #ededf2;
+      --frame: #f4f4f8;
+      --panel: #f7f7fa;
+      --card: #ffffff;
+      --line: #dedee5;
+      --text: #32323b;
+      --muted: #777784;
+      --dark: #52525a;
+      --accent: #e7a96b;
+      --accent-soft: #f5ddc4;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background:
+        radial-gradient(340px 230px at 13% 10%, #f3d8bb 0%, rgba(243, 216, 187, 0) 100%),
+        radial-gradient(340px 230px at 88% 88%, #f3d8bb 0%, rgba(243, 216, 187, 0) 100%),
+        var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 24px 20px;
+    }
+
+    .frame {
+      max-width: 1280px;
+      margin: 0 auto;
+      border-radius: 12px;
+      border: 1px solid #e1e1ea;
+      background: rgba(249, 249, 252, 0.88);
+      padding: 18px;
+      box-shadow: 0 8px 28px rgba(23, 23, 32, 0.06);
+    }
+
+    .top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .title {
+      margin: 0;
+      font-size: 1.56rem;
+      letter-spacing: 0.34em;
+      font-weight: 600;
+    }
+
+    .subtitle {
+      margin: 4px 0 0;
+      color: var(--muted);
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      font-size: 0.76rem;
+    }
+
+    .toggle-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 4px;
+    }
+
+    .toggle {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #62626e;
+      font-size: 0.7rem;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .toggle input {
+      accent-color: #5b5b63;
+    }
+
+    .board {
+      display: grid;
+      grid-template-columns: 1.35fr 1fr;
+      gap: 12px;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 12px;
+    }
+
+    .panel h2 {
+      margin: 0 0 8px;
+      font-size: 0.76rem;
+      letter-spacing: 0.34em;
+      font-weight: 700;
+      color: #4f4f59;
+      text-transform: uppercase;
+    }
+
+    .kpis {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin-bottom: 9px;
+    }
+
+    .kpi {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 9px 8px;
+      min-height: 72px;
+    }
+
+    .kpi .k {
+      color: var(--muted);
+      font-size: 0.67rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .kpi .v {
+      margin-top: 3px;
+      font-size: 1.48rem;
+      font-weight: 700;
+      line-height: 1.1;
+    }
+
+    .middle {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      border-top: 1px solid var(--line);
+      padding-top: 10px;
+    }
+
+    .mini-title {
+      margin: 0 0 5px;
+      font-size: 0.68rem;
+      color: #646470;
+      letter-spacing: 0.23em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    #periodRings {
+      width: 100%;
+      display: block;
+    }
+
+    .ranking {
+      display: grid;
+      gap: 6px;
+      max-height: 180px;
+      overflow: auto;
+      padding-right: 2px;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 18px 1fr 34px 34px;
+      gap: 6px;
+      align-items: center;
+      font-size: 0.75rem;
+    }
+
+    .pill {
+      border-radius: 4px;
+      text-align: center;
+      font-size: 0.66rem;
+      color: #fff;
+      padding: 2px 0;
+    }
+
+    .pill.a { background: var(--accent); }
+    .pill.b { background: #595961; }
+
+    .trend {
+      margin-top: 9px;
+      border-top: 1px solid var(--line);
+      padding-top: 10px;
+    }
+
+    .trend-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .chips {
+      display: inline-flex;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+
+    .chip {
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      background: #fff;
+      color: #676772;
+      font-size: 0.63rem;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      padding: 2px 6px;
+      cursor: pointer;
+    }
+
+    .chip.active {
+      background: #5b5b63;
+      border-color: #5b5b63;
+      color: #fff;
+    }
+
+    .right-stack {
+      display: grid;
+      grid-template-rows: auto auto;
+      gap: 12px;
+    }
+
+    .controls {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 7px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .controls select,
+    .controls input[type="search"] {
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      background: #fff;
+      color: #4a4a53;
+      font-size: 0.74rem;
+      padding: 5px 7px;
+    }
+
+    .demographics {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+    }
+
+    .bottom-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .matrix-wrap table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.71rem;
+    }
+
+    .matrix-wrap th,
+    .matrix-wrap td {
+      border: 1px solid var(--line);
+      padding: 4px 6px;
+      text-align: center;
+    }
+
+    .matrix-wrap th {
+      background: #f1f1f6;
+      color: #666671;
+      font-weight: 700;
+    }
+
+    .matrix-wrap td:first-child {
+      text-align: left;
+      color: #5f5f69;
+      font-weight: 600;
+      background: #fafafd;
+    }
+
+    .recent-list {
+      display: grid;
+      gap: 7px;
+      max-height: 240px;
+      overflow: auto;
+      padding-right: 3px;
+    }
+
+    .recent-item {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--accent);
+      border-radius: 7px;
+      padding: 7px 8px;
+      font-size: 0.73rem;
+    }
+
+    .recent-item .nm {
+      font-weight: 700;
+      font-size: 0.79rem;
+    }
+
+    .writeup {
+      margin-top: 11px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fff;
+      padding: 10px;
+      font-size: 0.8rem;
+      color: #444450;
+    }
+
+    .writeup p {
+      margin: 5px 0;
+    }
+
+    #tooltip {
+      position: fixed;
+      pointer-events: none;
+      opacity: 0;
+      background: rgba(33, 33, 39, 0.95);
+      border-radius: 7px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      font-size: 0.72rem;
+      padding: 7px 9px;
+      min-width: 160px;
+      z-index: 10;
+    }
+
+    @media (max-width: 1140px) {
+      .board {
+        grid-template-columns: 1fr;
       }
-    </script>
-<script type="importmap">
-{
-  "imports": {
-    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.27.0",
-    "react": "https://aistudiocdn.com/react@^19.2.0",
-    "react/": "https://aistudiocdn.com/react@^19.2.0/",
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
-    "recharts": "https://aistudiocdn.com/recharts@^3.3.0",
-    "pdfjs-dist": "https://aistudiocdn.com/pdfjs-dist@^4.6.0",
-    "mammoth": "https://aistudiocdn.com/mammoth@^1.8.0"
-  }
-}
-</script>
+      .bottom-grid,
+      .middle,
+      .demographics {
+        grid-template-columns: 1fr;
+      }
+      .kpis {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
-<body class="bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-200">
-    <div id="root"></div>
-    <script type="module" src="/index.tsx"></script>
+<body>
+  <div class="frame">
+    <header class="top">
+      <div>
+        <h1 class="title">COMET ATTRITION DASHBOARD</h1>
+        <p class="subtitle">Near-Earth Comet Observatory Exhibit</p>
+      </div>
+      <div class="toggle-wrap">
+        <label class="toggle">
+          <span>show only high risk</span>
+          <input id="highRiskOnly" type="checkbox" />
+        </label>
+      </div>
+    </header>
+
+    <div class="board">
+      <section class="panel">
+        <h2>Overview</h2>
+        <div class="kpis">
+          <article class="kpi">
+            <div class="k">High Risk Rate</div>
+            <div class="v" id="kpiRiskRate">0%</div>
+          </article>
+          <article class="kpi">
+            <div class="k">Total Comets</div>
+            <div class="v" id="kpiCount">0</div>
+          </article>
+          <article class="kpi">
+            <div class="k">Avg Velocity (km/s)</div>
+            <div class="v" id="kpiVelocity">0</div>
+          </article>
+        </div>
+
+        <div class="middle">
+          <section>
+            <p class="mini-title">Period Type</p>
+            <svg id="periodRings" viewBox="0 0 360 170"></svg>
+          </section>
+          <section>
+            <p class="mini-title">Top 5 Closest</p>
+            <div class="ranking" id="closestRank"></div>
+          </section>
+        </div>
+
+        <div class="trend">
+          <div class="trend-head">
+            <strong style="letter-spacing:.22em;text-transform:uppercase;font-size:.66rem;color:#63636f;">Approach Trend</strong>
+            <div class="chips" id="yearChips">
+              <button class="chip active" data-range="all">All</button>
+              <button class="chip" data-range="1800to1960">1800-1960</button>
+              <button class="chip" data-range="1960to2000">1960-2000</button>
+              <button class="chip" data-range="post2000">Post 2000</button>
+            </div>
+          </div>
+          <svg id="trendChart" width="100%" viewBox="0 0 740 230"></svg>
+        </div>
+      </section>
+
+      <section class="right-stack">
+        <section class="panel">
+          <h2>Demographics</h2>
+          <div class="controls">
+            <select id="riskFilter">
+              <option value="all">All risk levels</option>
+              <option value="high">High risk only</option>
+              <option value="low">Low risk only</option>
+            </select>
+            <input id="nameSearch" type="search" placeholder="Search comet..." />
+          </div>
+          <div class="demographics">
+            <section>
+              <p class="mini-title">Risk Ratio</p>
+              <svg id="riskDonut" width="100%" viewBox="0 0 240 200"></svg>
+            </section>
+            <section>
+              <p class="mini-title">Velocity Groups</p>
+              <svg id="velocityBars" width="100%" viewBox="0 0 260 200"></svg>
+            </section>
+            <section>
+              <p class="mini-title">Brightness</p>
+              <svg id="brightnessBars" width="100%" viewBox="0 0 290 200"></svg>
+            </section>
+          </div>
+        </section>
+
+        <section class="bottom-grid">
+          <section class="panel matrix-wrap">
+            <h2>Risk Score Matrix</h2>
+            <table id="matrixTable"></table>
+          </section>
+          <section class="panel">
+            <h2>Recent High Risk</h2>
+            <div class="recent-list" id="recentList"></div>
+          </section>
+        </section>
+      </section>
+    </div>
+
+    <section class="writeup">
+      <p><strong>Design (marks, channels, interactions):</strong> This exhibit combines KPI cards, period ring glyphs, trend bars, ratio donuts, grouped/horizontal bars, ranked records, and a score matrix. Encodings use <strong>risk index</strong> (color/category), <strong>discovery year</strong> (time), <strong>velocity</strong> and <strong>brightness</strong> (bar magnitude), and <strong>distance</strong> (ranking).</p>
+      <p><strong>Custom visualization category:</strong> <strong>Combinatorial</strong> (multi-chart dashboard hybrid with custom ring rows + matrix + ranked evidence blocks).</p>
+      <p><strong>Source modification note:</strong> Visual style inspired by the provided dashboard reference; all D3 code and layout are custom-built for this comet dataset.</p>
+    </section>
+  </div>
+
+  <div id="tooltip"></div>
+
+  <script>
+    const tooltip = d3.select("#tooltip");
+    const accent = "#e7a96b";
+    const accentSoft = "#f5ddc4";
+    const dark = "#52525a";
+
+    const state = {
+      data: [],
+      highRiskOnly: false,
+      riskFilter: "all",
+      search: "",
+      yearRange: "all"
+    };
+
+    function fmt(n, d = 2) {
+      return Number.isFinite(n) ? d3.format(`,.${d}f`)(n) : "-";
+    }
+
+    function showTooltip(event, html) {
+      tooltip
+        .style("opacity", 1)
+        .style("left", `${event.clientX + 12}px`)
+        .style("top", `${event.clientY + 12}px`)
+        .html(html);
+    }
+
+    function hideTooltip() {
+      tooltip.style("opacity", 0);
+    }
+
+    function isHighRisk(d) {
+      return d.risk_index >= 70;
+    }
+
+    function currentData() {
+      return state.data.filter(d => {
+        if (state.highRiskOnly && !isHighRisk(d)) return false;
+        if (state.riskFilter === "high" && !isHighRisk(d)) return false;
+        if (state.riskFilter === "low" && isHighRisk(d)) return false;
+        if (state.search && !d.name.toLowerCase().includes(state.search)) return false;
+
+        if (state.yearRange === "1800to1960" && (d.discovery_year < 1800 || d.discovery_year > 1960)) return false;
+        if (state.yearRange === "1960to2000" && (d.discovery_year < 1960 || d.discovery_year > 2000)) return false;
+        if (state.yearRange === "post2000" && d.discovery_year <= 2000) return false;
+        return true;
+      });
+    }
+
+    function updateKpis(rows) {
+      const highRate = rows.length ? (d3.mean(rows, d => isHighRisk(d) ? 1 : 0) * 100) : 0;
+      d3.select("#kpiRiskRate").text(`${fmt(highRate, 1)}%`);
+      d3.select("#kpiCount").text(rows.length);
+      d3.select("#kpiVelocity").text(fmt(d3.mean(rows, d => d.velocity_kms), 2));
+    }
+
+    function renderPeriodRings(rows) {
+      const svg = d3.select("#periodRings");
+      svg.selectAll("*").remove();
+      const g = svg.append("g").attr("transform", "translate(10,8)");
+
+      const labels = ["Short", "Intermediate", "Long"];
+      labels.forEach((p, i) => {
+        const group = rows.filter(d => d.period_type === p);
+        const high = group.filter(isHighRisk).length;
+        const low = Math.max(group.length - high, 0);
+        const ring = g.append("g").attr("transform", `translate(52,${28 + i * 48})`);
+        const pie = d3.pie().value(d => d.v)([{k: "high", v: high}, {k: "low", v: low || 1}]);
+        const arc = d3.arc().innerRadius(10).outerRadius(18);
+        ring.selectAll("path").data(pie).join("path")
+          .attr("d", arc)
+          .attr("fill", d => d.data.k === "high" ? accent : dark);
+        ring.append("circle").attr("r", 9).attr("fill", "#fff");
+
+        g.append("text").attr("x", 4).attr("y", 32 + i * 48).attr("font-size", 11).attr("fill", "#666672").text(p);
+        g.append("text").attr("x", 85).attr("y", 32 + i * 48).attr("font-size", 11).attr("fill", "#55555f").text(`${group.length}`);
+        g.append("text").attr("x", 120).attr("y", 32 + i * 48).attr("font-size", 11).attr("fill", accent).text(`${high} high`);
+      });
+    }
+
+    function renderClosest(rows) {
+      const wrap = d3.select("#closestRank");
+      wrap.selectAll("*").remove();
+      const top = [...rows].sort((a, b) => a.distance_au - b.distance_au).slice(0, 5);
+      top.forEach((d, i) => {
+        const row = wrap.append("div").attr("class", "row");
+        row.append("div").style("color", "#7a7a86").text(i + 1);
+        row.append("div").text(d.name);
+        row.append("div").attr("class", "pill a").text(fmt(d.distance_au, 2));
+        row.append("div").attr("class", "pill b").text(fmt(d.risk_index, 0));
+      });
+    }
+
+    function renderTrend(rows) {
+      const svg = d3.select("#trendChart");
+      svg.selectAll("*").remove();
+      const W = 740, H = 230, m = {t: 10, r: 8, b: 34, l: 44};
+      const w = W - m.l - m.r, h = H - m.t - m.b;
+      const g = svg.append("g").attr("transform", `translate(${m.l},${m.t})`);
+
+      const years = d3.rollups(rows, v => v.length, d => d.discovery_year).sort((a, b) => d3.ascending(a[0], b[0]));
+      const x = d3.scaleBand().domain(years.map(d => String(d[0]))).range([0, w]).padding(0.12);
+      const y = d3.scaleLinear().domain([0, d3.max(years, d => d[1]) || 1]).nice().range([h, 0]);
+
+      g.append("g").attr("transform", `translate(0,${h})`)
+        .call(d3.axisBottom(x).tickValues(x.domain().filter((_, i) => i % Math.max(1, Math.ceil(years.length / 10)) === 0)))
+        .call(a => a.selectAll("text").attr("font-size", 9).attr("fill", "#6f6f79"))
+        .call(a => a.selectAll("path,line").attr("stroke", "#d9d9e0"));
+      g.append("g")
+        .call(d3.axisLeft(y).ticks(4))
+        .call(a => a.selectAll("text").attr("font-size", 9).attr("fill", "#6f6f79"))
+        .call(a => a.selectAll("path,line").attr("stroke", "#d9d9e0"));
+
+      g.selectAll("rect")
+        .data(years)
+        .join("rect")
+        .attr("x", d => x(String(d[0])))
+        .attr("y", d => y(d[1]))
+        .attr("width", x.bandwidth())
+        .attr("height", d => h - y(d[1]))
+        .attr("fill", accent)
+        .on("mousemove", (event, d) => {
+          showTooltip(event, `<strong>${d[0]}</strong><br/>Comets: ${d[1]}`);
+        })
+        .on("mouseleave", hideTooltip);
+    }
+
+    function renderRiskDonut(rows) {
+      const svg = d3.select("#riskDonut");
+      svg.selectAll("*").remove();
+      const W = 240, H = 200;
+      const g = svg.append("g").attr("transform", `translate(${W / 2},${H / 2})`);
+      const high = rows.filter(isHighRisk).length;
+      const low = Math.max(rows.length - high, 0);
+      const pie = d3.pie().value(d => d.v)([{k: "High", v: high}, {k: "Low", v: low || 1}]);
+      const arc = d3.arc().innerRadius(40).outerRadius(70);
+      g.selectAll("path").data(pie).join("path")
+        .attr("d", arc)
+        .attr("fill", d => d.data.k === "High" ? accent : dark);
+      g.append("text").attr("text-anchor", "middle").attr("font-size", 11).attr("fill", "#666672").text("High Risk");
+      g.append("text").attr("text-anchor", "middle").attr("dy", 16).attr("font-size", 15).attr("font-weight", 700)
+        .text(`${fmt(rows.length ? (high / rows.length) * 100 : 0, 1)}%`);
+    }
+
+    function renderVelocity(rows) {
+      const svg = d3.select("#velocityBars");
+      svg.selectAll("*").remove();
+      const W = 260, H = 200, m = {t: 10, r: 8, b: 24, l: 36};
+      const w = W - m.l - m.r, h = H - m.t - m.b;
+      const g = svg.append("g").attr("transform", `translate(${m.l},${m.t})`);
+      const groups = [
+        {k: "<25", c: rows.filter(d => d.velocity_kms < 25).length},
+        {k: "25-35", c: rows.filter(d => d.velocity_kms >= 25 && d.velocity_kms < 35).length},
+        {k: "35-45", c: rows.filter(d => d.velocity_kms >= 35 && d.velocity_kms < 45).length},
+        {k: "45+", c: rows.filter(d => d.velocity_kms >= 45).length}
+      ];
+      const x = d3.scaleBand().domain(groups.map(d => d.k)).range([0, w]).padding(0.22);
+      const y = d3.scaleLinear().domain([0, d3.max(groups, d => d.c) || 1]).nice().range([h, 0]);
+      g.append("g").attr("transform", `translate(0,${h})`).call(d3.axisBottom(x))
+        .call(a => a.selectAll("text").attr("font-size", 9).attr("fill", "#6f6f79"))
+        .call(a => a.selectAll("path,line").attr("stroke", "#d9d9e0"));
+      g.selectAll("rect").data(groups).join("rect")
+        .attr("x", d => x(d.k))
+        .attr("y", d => y(d.c))
+        .attr("width", x.bandwidth())
+        .attr("height", d => h - y(d.c))
+        .attr("fill", dark)
+        .on("mousemove", (event, d) => {
+          showTooltip(event, `<strong>${d.k} km/s</strong><br/>Comets: ${d.c}`);
+        })
+        .on("mouseleave", hideTooltip);
+    }
+
+    function renderBrightness(rows) {
+      const svg = d3.select("#brightnessBars");
+      svg.selectAll("*").remove();
+      const W = 290, H = 200, m = {t: 10, r: 8, b: 18, l: 74};
+      const w = W - m.l - m.r, h = H - m.t - m.b;
+      const g = svg.append("g").attr("transform", `translate(${m.l},${m.t})`);
+      const groups = [
+        {k: "Very Bright", c: rows.filter(d => d.brightness_mag <= 4.5).length},
+        {k: "Bright", c: rows.filter(d => d.brightness_mag > 4.5 && d.brightness_mag <= 6.0).length},
+        {k: "Moderate", c: rows.filter(d => d.brightness_mag > 6.0 && d.brightness_mag <= 7.5).length},
+        {k: "Dim", c: rows.filter(d => d.brightness_mag > 7.5).length}
+      ];
+      const y = d3.scaleBand().domain(groups.map(d => d.k)).range([0, h]).padding(0.22);
+      const x = d3.scaleLinear().domain([0, d3.max(groups, d => d.c) || 1]).nice().range([0, w]);
+      g.append("g").call(d3.axisLeft(y))
+        .call(a => a.selectAll("text").attr("font-size", 9).attr("fill", "#6f6f79"))
+        .call(a => a.selectAll("path,line").attr("stroke", "#d9d9e0"));
+      g.selectAll("rect").data(groups).join("rect")
+        .attr("x", 0).attr("y", d => y(d.k))
+        .attr("width", d => x(d.c)).attr("height", y.bandwidth())
+        .attr("fill", accent)
+        .on("mousemove", (event, d) => {
+          showTooltip(event, `<strong>${d.k}</strong><br/>Comets: ${d.c}`);
+        })
+        .on("mouseleave", hideTooltip);
+      g.selectAll("text.v").data(groups).join("text")
+        .attr("x", d => x(d.c) + 4).attr("y", d => y(d.k) + y.bandwidth() / 2 + 3)
+        .attr("font-size", 9).attr("fill", "#666671").text(d => d.c);
+    }
+
+    function renderMatrix(rows) {
+      const table = d3.select("#matrixTable");
+      table.selectAll("*").remove();
+      const columns = ["<45", "45-64", "65-79", "80+"];
+      const periodTypes = ["Short", "Intermediate", "Long"];
+
+      const thead = table.append("thead").append("tr");
+      thead.append("th").text("Period Type");
+      columns.forEach(c => thead.append("th").text(c));
+
+      const tbody = table.append("tbody");
+      periodTypes.forEach(pt => {
+        const rowData = rows.filter(d => d.period_type === pt);
+        const counts = [
+          rowData.filter(d => d.risk_index < 45).length,
+          rowData.filter(d => d.risk_index >= 45 && d.risk_index < 65).length,
+          rowData.filter(d => d.risk_index >= 65 && d.risk_index < 80).length,
+          rowData.filter(d => d.risk_index >= 80).length
+        ];
+        const tr = tbody.append("tr");
+        tr.append("td").text(pt);
+        counts.forEach(v => {
+          const intensity = Math.min(1, v / 4);
+          tr.append("td")
+            .style("background", d3.interpolateRgb("#f8f8fc", accentSoft)(intensity))
+            .style("color", "#555560")
+            .text(v)
+            .on("mousemove", (event) => {
+              const label = columns[counts.indexOf(v)];
+              showTooltip(event, `<strong>${pt}</strong><br/>Risk band: ${label}<br/>Comets: ${v}`);
+            })
+            .on("mouseleave", hideTooltip);
+        });
+      });
+    }
+
+    function renderRecent(rows) {
+      const wrap = d3.select("#recentList");
+      wrap.selectAll("*").remove();
+      const recent = [...rows]
+        .sort((a, b) => d3.descending(a.approach_date.getTime(), b.approach_date.getTime()))
+        .slice(0, 8);
+
+      recent.forEach(d => {
+        const card = wrap.append("div").attr("class", "recent-item");
+        card.append("div").attr("class", "nm").text(d.name);
+        card.append("div").style("color", "#777782").text(`Date: ${d3.timeFormat("%b %d, %Y")(d.approach_date)} | ${d.origin}`);
+        card.append("div")
+          .style("color", isHighRisk(d) ? "#cb8543" : "#666670")
+          .text(`Risk: ${fmt(d.risk_index, 0)} | Dist: ${fmt(d.distance_au, 3)} AU | V: ${fmt(d.velocity_kms, 1)} km/s`);
+      });
+    }
+
+    function renderAll() {
+      const rows = currentData();
+      updateKpis(rows);
+      renderPeriodRings(rows);
+      renderClosest(rows);
+      renderTrend(rows);
+      renderRiskDonut(rows);
+      renderVelocity(rows);
+      renderBrightness(rows);
+      renderMatrix(rows);
+      renderRecent(rows);
+    }
+
+    function bindControls() {
+      d3.select("#highRiskOnly").on("change", function() {
+        state.highRiskOnly = this.checked;
+        renderAll();
+      });
+      d3.select("#riskFilter").on("change", function() {
+        state.riskFilter = this.value;
+        renderAll();
+      });
+      d3.select("#nameSearch").on("input", function() {
+        state.search = this.value.trim().toLowerCase();
+        renderAll();
+      });
+      d3.selectAll("#yearChips .chip").on("click", function() {
+        d3.selectAll("#yearChips .chip").classed("active", false);
+        d3.select(this).classed("active", true);
+        state.yearRange = d3.select(this).attr("data-range");
+        renderAll();
+      });
+    }
+
+    d3.csv("data/comets_dashboard.csv", d => ({
+      name: d.name,
+      approach_date: new Date(d.approach_date),
+      discovery_year: +d.discovery_year,
+      distance_au: +d.distance_au,
+      velocity_kms: +d.velocity_kms,
+      brightness_mag: +d.brightness_mag,
+      tail_km: +d.tail_km,
+      origin: d.origin,
+      period_type: d.period_type,
+      risk_index: +d.risk_index
+    })).then(data => {
+      state.data = data;
+      bindControls();
+      renderAll();
+    });
+  </script>
 </body>
 </html>

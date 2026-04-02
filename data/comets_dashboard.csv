@@ -1,0 +1,41 @@
+name,approach_date,discovery_year,distance_au,velocity_kms,brightness_mag,tail_km,origin,period_type,risk_index
+2P/Encke,2026-01-14,1786,0.33,34.2,5.8,120000,Jupiter Family,Short,62
+67P/Churyumov-Gerasimenko,2026-02-03,1969,0.41,29.5,7.1,90000,Jupiter Family,Short,48
+1P/Halley,2026-02-21,1758,0.57,54.1,3.9,180000,Halley Type,Intermediate,74
+109P/Swift-Tuttle,2026-03-08,1862,0.72,58.6,4.4,250000,Halley Type,Intermediate,79
+C/2021 A1 Leonard,2026-03-19,2021,0.49,46.4,5.1,220000,Long Period,Long,71
+C/2023 P1 Nishimura,2026-04-04,2023,0.38,67.7,4.9,150000,Long Period,Long,83
+46P/Wirtanen,2026-04-17,1948,0.29,23.4,6.2,80000,Jupiter Family,Short,45
+96P/Machholz,2026-05-02,1986,0.31,61.2,6.0,130000,Halley Type,Intermediate,76
+C/2020 F3 NEOWISE,2026-05-18,2020,0.52,44.9,2.7,300000,Long Period,Long,68
+21P/Giacobini-Zinner,2026-05-31,1900,0.35,27.1,7.6,70000,Jupiter Family,Short,41
+73P/Schwassmann-Wachmann,2026-06-09,1930,0.22,24.7,8.0,50000,Jupiter Family,Short,39
+7P/Pons-Winnecke,2026-06-26,1819,0.43,31.5,7.3,85000,Jupiter Family,Short,47
+8P/Tuttle,2026-07-03,1790,0.47,37.2,6.4,110000,Halley Type,Intermediate,57
+153P/Ikeya-Zhang,2026-07-15,2002,0.63,39.8,5.5,170000,Long Period,Long,65
+19P/Borrelly,2026-07-28,1904,0.36,26.4,7.0,95000,Jupiter Family,Short,44
+45P/Honda-Mrkos-Pajdusakova,2026-08-06,1948,0.27,22.2,7.9,65000,Jupiter Family,Short,36
+C/2017 K2 PANSTARRS,2026-08-19,2017,0.88,32.1,8.8,140000,Long Period,Long,52
+17P/Holmes,2026-09-03,1892,0.39,25.6,6.6,92000,Jupiter Family,Short,42
+C/2019 Y4 ATLAS,2026-09-12,2019,0.45,49.3,5.2,210000,Long Period,Long,72
+122P/de Vico,2026-09-29,1846,0.58,35.4,6.1,145000,Halley Type,Intermediate,59
+55P/Tempel-Tuttle,2026-10-07,1865,0.61,56.2,4.7,230000,Halley Type,Intermediate,77
+26P/Grigg-Skjellerup,2026-10-23,1902,0.34,24.1,7.4,68000,Jupiter Family,Short,40
+P/2006 T1 Levy,2026-11-02,2006,0.26,20.3,8.3,56000,Jupiter Family,Short,34
+C/2022 E3 ZTF,2026-11-18,2022,0.37,58.8,5.0,190000,Long Period,Long,81
+31P/Schwassmann-Wachmann,2026-11-29,1925,0.30,21.5,8.1,52000,Jupiter Family,Short,35
+10P/Tempel,2026-12-06,1873,0.40,28.7,7.2,76000,Jupiter Family,Short,43
+41P/Tuttle-Giacobini-Kresak,2026-12-17,1858,0.25,23.9,7.8,64000,Jupiter Family,Short,38
+C/2014 UN271 Bernardinelli-Bernstein,2027-01-05,2014,0.95,29.7,9.1,260000,Long Period,Long,55
+13P/Olbers,2027-01-19,1815,0.54,33.8,6.3,125000,Halley Type,Intermediate,58
+169P/NEAT,2027-02-01,2002,0.32,27.6,7.5,69000,Jupiter Family,Short,46
+88P/Howell,2027-02-13,1981,0.44,30.1,7.1,82000,Jupiter Family,Short,49
+C/2009 P1 Garradd,2027-02-25,2009,0.69,41.3,5.6,175000,Long Period,Long,66
+P/2016 BA14 PANSTARRS,2027-03-11,2016,0.21,18.9,8.6,47000,Jupiter Family,Short,33
+141P/Machholz,2027-03-24,1994,0.28,22.8,8.0,60000,Jupiter Family,Short,37
+C/1995 O1 Hale-Bopp,2027-04-07,1995,0.84,52.4,2.1,320000,Long Period,Long,78
+C/2001 Q4 NEAT,2027-04-19,2001,0.76,45.6,4.3,205000,Long Period,Long,70
+15P/Finlay,2027-05-02,1886,0.33,26.9,7.3,74000,Jupiter Family,Short,42
+81P/Wild,2027-05-14,1978,0.31,25.3,7.0,81000,Jupiter Family,Short,44
+P/2019 LD2 ATLAS,2027-05-27,2019,0.42,28.4,7.7,88000,Jupiter Family,Short,47
+22P/Kopff,2027-06-09,1906,0.38,27.8,7.2,79000,Jupiter Family,Short,43
