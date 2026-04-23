@@ -3,12 +3,12 @@
 }
 
 :root {
-  --bg: #0f172a;
-  --panel: #111b33;
-  --panel-light: #172441;
-  --text: #e5e7eb;
-  --muted: #a8b0c3;
-  --border: #2b385b;
+  --bg: #161616;
+  --panel: #1f1f1f;
+  --panel-light: #2a2a2a;
+  --text: #f3f4f6;
+  --muted: #cdcdcd;
+  --border: #3b3b3b;
   --yes: #22c55e;
   --yes-soft: rgba(34, 197, 94, 0.16);
   --yes-strong: #166534;
@@ -22,8 +22,8 @@ body {
   font-family: "Inter", "Segoe UI", Arial, sans-serif;
   color: var(--text);
   background:
-    radial-gradient(circle at 20% 0%, #1e2a49 0%, transparent 30%),
-    radial-gradient(circle at 90% 10%, #2a1d2e 0%, transparent 24%),
+    radial-gradient(circle at 20% 0%, #2f271e 0%, transparent 30%),
+    radial-gradient(circle at 90% 10%, #3a2418 0%, transparent 24%),
     var(--bg);
 }
 
@@ -34,7 +34,7 @@ body {
 }
 
 .hero {
-  background: linear-gradient(145deg, rgba(23, 36, 65, 0.96), rgba(14, 23, 42, 0.96));
+  background: linear-gradient(145deg, rgba(42, 42, 42, 0.96), rgba(24, 24, 24, 0.96));
   border: 1px solid var(--border);
   border-radius: 18px;
   padding: 24px 24px 22px;
@@ -46,7 +46,7 @@ body {
   font-size: 0.8rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #a5b4fc;
+  color: #fbbf24;
   font-weight: 800;
 }
 
@@ -78,11 +78,11 @@ h1 {
 .hero p {
   margin: 10px 0;
   line-height: 1.55;
-  color: #d6dceb;
+  color: #e7e5e4;
 }
 
 a {
-  color: #93c5fd;
+  color: #f59e0b;
 }
 
 .framing-strip {
@@ -100,7 +100,7 @@ a {
   padding: 7px 11px;
   border: 1px solid rgba(148, 163, 184, 0.32);
   background: rgba(15, 23, 42, 0.6);
-  color: #e2e8f0;
+  color: #f3f4f6;
 }
 
 .charts-row {
@@ -163,7 +163,7 @@ a {
 .chart-kpi {
   margin: 6px 0 10px;
   font-size: 0.9rem;
-  color: #dbe1f0;
+  color: #e5e7eb;
 }
 
 .chart-kpi strong {
@@ -184,14 +184,14 @@ a {
   height: auto;
   border: 1px solid rgba(148, 163, 184, 0.24);
   border-radius: 12px;
-  background: linear-gradient(180deg, #f8fafc 0%, #eef2ff 100%);
+  background: linear-gradient(180deg, #fafaf9 0%, #f1f1f1 100%);
 }
 
 .caption {
   margin: 10px 0 0;
   font-size: 0.95rem;
   line-height: 1.5;
-  color: #d7dded;
+  color: #e7e5e4;
 }
 
 .writeups {
@@ -202,7 +202,7 @@ a {
 }
 
 .writeup-card {
-  background: linear-gradient(180deg, rgba(23, 36, 65, 0.96), rgba(15, 23, 42, 0.96));
+  background: linear-gradient(180deg, rgba(42, 42, 42, 0.96), rgba(22, 22, 22, 0.96));
   border: 1px solid var(--border);
   border-radius: 14px;
   padding: 14px 16px;
@@ -232,23 +232,23 @@ a {
 }
 
 .axis {
-  stroke: #64748b;
+  stroke: #57534e;
   stroke-width: 1;
 }
 
 .grid {
-  stroke: #e2e8f0;
+  stroke: #d6d3d1;
   stroke-width: 1;
 }
 
 .tick {
-  fill: #475569;
+  fill: #44403c;
   font-size: 11px;
   font-weight: 600;
 }
 
 .axis-label {
-  fill: #334155;
+  fill: #292524;
   font-size: 12px;
   font-weight: 700;
 }
@@ -277,7 +277,7 @@ a {
 }
 
 .point {
-  stroke: #f8fafc;
+  stroke: #fafaf9;
   stroke-width: 1.8;
 }
 

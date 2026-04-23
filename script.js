@@ -191,7 +191,7 @@ function drawSupportChart(allUsData) {
   const minRate = 0;
   const maxRate = 10;
 
-  createArrowMarker(svg, "support-arrowhead", "#1d4ed8");
+  createArrowMarker(svg, "support-arrowhead", "#15803d");
 
   drawAxes(
     svg,
