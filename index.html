@@ -1,57 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AI Plagiarism Checker</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            fontFamily: {
-              sans: ['Inter', 'sans-serif'],
-            },
-            colors: {
-              primary: {
-                DEFAULT: '#4f46e5',
-                '50': '#eef2ff',
-                '100': '#e0e7ff',
-                '200': '#c7d2fe',
-                '300': '#a5b4fc',
-                '400': '#818cf8',
-                '500': '#6366f1',
-                '600': '#4f46e5',
-                '700': '#4338ca',
-                '800': '#3730a3',
-                '900': '#312e81',
-                '950': '#1e1b4b',
-              },
-            }
-          }
-        }
-      }
-    </script>
-<script type="importmap">
-{
-  "imports": {
-    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.27.0",
-    "react": "https://aistudiocdn.com/react@^19.2.0",
-    "react/": "https://aistudiocdn.com/react@^19.2.0/",
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
-    "recharts": "https://aistudiocdn.com/recharts@^3.3.0",
-    "pdfjs-dist": "https://aistudiocdn.com/pdfjs-dist@^4.6.0",
-    "mammoth": "https://aistudiocdn.com/mammoth@^1.8.0"
-  }
-}
-</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Homework: Opposing Data Visualizations</title>
+  <link rel="stylesheet" href="./styles.css">
 </head>
-<body class="bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-200">
-    <div id="root"></div>
-    <script type="module" src="/index.tsx"></script>
+<body>
+  <main class="page">
+    <header>
+      <h1>Homework: Opposing Data Visualizations</h1>
+      <p class="student-meta">
+        Name: Your Name |
+        Email: your.email@asu.edu
+      </p>
+      <p>
+        <strong>Topic:</strong> Is the United States becoming safer from lethal violence?
+      </p>
+      <p>
+        Homicide trends are politically and socially controversial because different groups focus on
+        different time windows to argue opposite claims about safety, public policy, and social
+        progress. One side emphasizes long-term decline compared with the early 1990s, while the
+        other side emphasizes the sharp rise around 2020 and argues that danger remains high.
+      </p>
+      <p>
+        Both charts below use the same source dataset:
+        <a href="https://ourworldindata.org/grapher/homicide-rate-unodc" target="_blank" rel="noopener noreferrer">
+          Our World in Data - Homicide rate (UNODC)
+        </a>.
+        The framing changes through selective time windows, baseline choices, and color/annotation
+        emphasis.
+      </p>
+    </header>
+
+    <section class="charts-row">
+      <article class="chart-card support">
+        <h2>Yes: America is much safer than in the 1990s</h2>
+        <svg id="support-chart" class="chart-svg" viewBox="0 0 560 360" aria-label="Long-term homicide decline chart"></svg>
+        <p class="caption">
+          This chart highlights the full 1990-2023 trend and emphasizes the large long-run decline
+          from about 9.6 to 5.8 homicides per 100,000.
+        </p>
+      </article>
+
+      <article class="chart-card oppose">
+        <h2>No: Recent years still show a public-safety warning</h2>
+        <svg id="oppose-chart" class="chart-svg" viewBox="0 0 560 360" aria-label="Recent homicide spike chart"></svg>
+        <p class="caption">
+          This chart zooms into 2019-2023 and uses a truncated y-axis to stress the abrupt jump in
+          2020-2021 and the still-elevated 2023 value relative to 2019.
+        </p>
+      </article>
+    </section>
+
+    <section class="writeups">
+      <article>
+        <h3>Left chart rhetoric writeup (affirmative framing)</h3>
+        <p>
+          I use <strong>temporal framing</strong> by showing the entire 1990-2023 range, which makes
+          the dominant narrative a long-term decline. I also use <strong>color connotation</strong>
+          (cool blue/green) and a <strong>zero-baseline y-axis</strong>, both of which reduce perceived
+          volatility and visually communicate gradual improvement. Finally, the annotation compares
+          endpoints to reinforce the idea that current conditions are much better than the historic
+          peak period.
+        </p>
+      </article>
+      <article>
+        <h3>Right chart rhetoric writeup (negative framing)</h3>
+        <p>
+          I use <strong>selective windowing</strong> to isolate 2019-2023, where the most dramatic
+          increase is visible. I also apply <strong>axis truncation</strong> (starting near 4.5 instead
+          of zero), which magnifies year-to-year differences and makes the 2020-2021 surge look
+          alarmingly steep. Warm red tones and callout labels increase urgency, supporting a skeptical
+          argument that recent trends still justify concern despite any long-term progress.
+        </p>
+      </article>
+    </section>
+  </main>
+
+  <script src="./script.js"></script>
 </body>
 </html>
