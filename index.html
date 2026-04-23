@@ -1,57 +1,127 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AI Plagiarism Checker</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            fontFamily: {
-              sans: ['Inter', 'sans-serif'],
-            },
-            colors: {
-              primary: {
-                DEFAULT: '#4f46e5',
-                '50': '#eef2ff',
-                '100': '#e0e7ff',
-                '200': '#c7d2fe',
-                '300': '#a5b4fc',
-                '400': '#818cf8',
-                '500': '#6366f1',
-                '600': '#4f46e5',
-                '700': '#4338ca',
-                '800': '#3730a3',
-                '900': '#312e81',
-                '950': '#1e1b4b',
-              },
-            }
-          }
-        }
-      }
-    </script>
-<script type="importmap">
-{
-  "imports": {
-    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.27.0",
-    "react": "https://aistudiocdn.com/react@^19.2.0",
-    "react/": "https://aistudiocdn.com/react@^19.2.0/",
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
-    "recharts": "https://aistudiocdn.com/recharts@^3.3.0",
-    "pdfjs-dist": "https://aistudiocdn.com/pdfjs-dist@^4.6.0",
-    "mammoth": "https://aistudiocdn.com/mammoth@^1.8.0"
-  }
-}
-</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Homework: Opposing Data Visualizations</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
 </head>
-<body class="bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-200">
-    <div id="root"></div>
-    <script type="module" src="/index.tsx"></script>
+<body>
+  <main class="page-shell">
+    <header class="top-hero">
+      <div class="top-hero-nav">
+        <p class="brand">framingboard</p>
+        <div class="nav-pills" aria-label="Navigation styling">
+          <span class="nav-pill">Assignment</span>
+          <span class="nav-pill">Dataset</span>
+          <span class="nav-pill">Argument design</span>
+        </div>
+      </div>
+      <h1>Can opposite stories both sound true in the same homicide dataset?</h1>
+      <p class="assignment-tag">CSE 578 · Homework · Visualization Rhetoric</p>
+    </header>
+
+    <section class="intro-card">
+      <div class="student-meta-row" aria-label="Student information">
+        <span class="meta-pill">Name: Your Name</span>
+        <span class="meta-pill">Email: your.email@asu.edu</span>
+      </div>
+      <p class="intro-copy">
+        U.S. public safety is controversial because debates about crime policy often use the same
+        numbers but emphasize different periods. One narrative says the country is significantly
+        safer than in the early 1990s. The opposing narrative argues that the recent jump in lethal
+        violence proves danger remains elevated.
+      </p>
+      <p class="intro-copy">
+        Both visualizations below use the same source dataset:
+        <a href="https://ourworldindata.org/grapher/homicide-rate-unodc" target="_blank" rel="noopener noreferrer">
+          Our World in Data - Homicide rate (UNODC)
+        </a>.
+        The opposing arguments are produced through framing choices: time-window selection, axis
+        design, annotation style, and color connotation.
+      </p>
+      <div class="framing-chip-row" aria-label="Framing strategies used">
+        <span class="chip yes">Same source dataset</span>
+        <span class="chip yes">Different temporal framing</span>
+        <span class="chip no">Different emotional styling</span>
+      </div>
+    </section>
+
+    <p class="comparison-divider">ONE DATASET · TWO OPPOSING ARGUMENTS</p>
+
+    <section class="charts-row">
+      <article class="chart-card support">
+        <div class="chart-header">
+          <span class="side-badge">Affirmative / "Yes"</span>
+          <h2>America is much safer than during the 1990s crime wave</h2>
+        </div>
+        <p class="chart-kpi">
+          Long-run reduction since peak year:
+          <strong id="support-kpi">--</strong>
+        </p>
+        <svg id="support-chart" class="chart-svg" viewBox="0 0 620 390" role="img" aria-label="Long-term homicide decline chart"></svg>
+        <p class="caption">
+          The full 1990-2023 trend with a zero-baseline emphasizes a broad multi-decade decline and
+          frames recent years as part of sustained historical improvement.
+        </p>
+      </article>
+
+      <article class="chart-card oppose">
+        <div class="chart-header">
+          <span class="side-badge">Negative / "No"</span>
+          <h2>Recent years still signal a serious public-safety warning</h2>
+        </div>
+        <p class="chart-kpi">
+          Increase from 2019 to 2021:
+          <strong id="oppose-kpi">--</strong>
+        </p>
+        <svg id="oppose-chart" class="chart-svg" viewBox="0 0 620 390" role="img" aria-label="Recent homicide surge chart"></svg>
+        <p class="caption">
+          A focused 2019-2023 view with a truncated y-axis magnifies the 2020-2021 surge and keeps
+          attention on the fact that 2023 remains above the 2019 baseline.
+        </p>
+      </article>
+    </section>
+
+    <section class="writeups">
+      <article class="writeup-card support-note">
+        <h3>Left chart rhetoric writeup (affirmative framing)</h3>
+        <p>
+          I designed the left chart to persuade viewers that progress is real. The primary technique
+          is <strong>temporal framing</strong>: using the full 1990-2023 horizon changes the story from
+          short-term volatility to long-term decline. I also use <strong>scale framing</strong> with a
+          y-axis that starts at zero, which visually compresses yearly fluctuations and strengthens
+          the impression of steady improvement.
+        </p>
+        <p>
+          The calm green palette and "recovery" language are deliberate
+          <strong>affective cues</strong> that reduce urgency. Endpoint and peak annotations create a
+          memorable before/after comparison, making the argument persuasive by showing that present
+          conditions look better than the high-violence era that many people remember.
+        </p>
+      </article>
+
+      <article class="writeup-card oppose-note">
+        <h3>Right chart rhetoric writeup (negative framing)</h3>
+        <p>
+          I designed the right chart to persuade viewers that concern is still justified. The key
+          technique is <strong>selective windowing</strong>: by isolating 2019-2023, the sudden
+          escalation appears central rather than incidental. I also use <strong>axis truncation</strong>
+          (starting at 4.5 instead of zero), which amplifies the visual steepness of the increase.
+        </p>
+        <p>
+          Warm reds, warning labels, and explicit baseline comparison are
+          <strong>narrative urgency cues</strong>. These choices frame the same data as a warning
+          story: despite long-run gains, recent rates remain elevated enough to support a skeptical
+          "not safe enough" viewpoint.
+        </p>
+      </article>
+    </section>
+  </main>
+
+  <script type="module" src="./script.js"></script>
 </body>
 </html>
