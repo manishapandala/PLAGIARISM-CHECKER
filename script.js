@@ -1,9 +1,9 @@
 const DATA_PATH = "./data/homicide-rate-unodc.csv";
 
-const LEFT_MARGIN = 56;
-const RIGHT_MARGIN = 20;
-const TOP_MARGIN = 28;
-const BOTTOM_MARGIN = 40;
+const LEFT_MARGIN = 58;
+const RIGHT_MARGIN = 26;
+const TOP_MARGIN = 30;
+const BOTTOM_MARGIN = 42;
 const INNER_WIDTH = 560 - LEFT_MARGIN - RIGHT_MARGIN;
 const INNER_HEIGHT = 360 - TOP_MARGIN - BOTTOM_MARGIN;
 
@@ -147,6 +147,43 @@ function drawAxes(svg, yearTicks, rateTicks, minYear, maxYear, minRate, maxRate,
   svg.appendChild(axisLayer);
 }
 
+function drawMetricBadge(targetId, title, value, classes) {
+  const badge = document.getElementById(targetId);
+  if (!badge) return;
+  badge.innerHTML = `<span class="metric-title">${title}</span><span class="metric-value ${classes}">${value}</span>`;
+}
+
+function drawArrowAnnotation(svg, x1, y1, x2, y2, classes) {
+  const arrow = createSvgElement("line", {
+    x1,
+    y1,
+    x2,
+    y2,
+    class: classes
+  });
+  arrow.setAttribute("marker-end", "url(#arrowhead)");
+  svg.appendChild(arrow);
+}
+
+function createArrowMarker(svg, color) {
+  const defs = createSvgElement("defs");
+  const marker = createSvgElement("marker", {
+    id: "arrowhead",
+    markerWidth: 8,
+    markerHeight: 8,
+    refX: 6,
+    refY: 3,
+    orient: "auto"
+  });
+  const arrowPath = createSvgElement("path", {
+    d: "M0,0 L0,6 L6,3 z",
+    fill: color
+  });
+  marker.appendChild(arrowPath);
+  defs.appendChild(marker);
+  svg.appendChild(defs);
+}
+
 function drawSupportChart(allUsData) {
   const svg = document.getElementById("support-chart");
   if (!svg) return;
@@ -157,6 +194,8 @@ function drawSupportChart(allUsData) {
   const maxYear = 2023;
   const minRate = 0;
   const maxRate = 10;
+
+  createArrowMarker(svg, "#2563eb");
 
   drawAxes(
     svg,
@@ -180,7 +219,7 @@ function drawSupportChart(allUsData) {
   });
   svg.appendChild(path);
 
-  const first = data[0];
+  const first = data[1];
   const last = data[data.length - 1];
   const firstCircle = createSvgElement("circle", {
     cx: xForYear(first.year, minYear, maxYear),
@@ -198,12 +237,24 @@ function drawSupportChart(allUsData) {
   svg.appendChild(lastCircle);
 
   const annotation = createSvgElement("text", {
-    x: xForYear(2001, minYear, maxYear),
-    y: yForRate(9.2, minRate, maxRate),
+    x: xForYear(1997, minYear, maxYear),
+    y: yForRate(8.7, minRate, maxRate),
     class: "annotation support-annotation"
   });
-  annotation.textContent = "Down ~40% from 1991 peak to 2023";
+  annotation.textContent = "Steady long-run decline";
   svg.appendChild(annotation);
+
+  drawArrowAnnotation(
+    svg,
+    xForYear(first.year, minYear, maxYear) + 6,
+    yForRate(first.rate, minRate, maxRate) + 6,
+    xForYear(last.year, minYear, maxYear) - 2,
+    yForRate(last.rate, minRate, maxRate) - 8,
+    "support-arrow"
+  );
+
+  const declinePercent = ((first.rate - last.rate) / first.rate) * 100;
+  drawMetricBadge("support-badge", "1991 to 2023 change", `${declinePercent.toFixed(0)}% lower`, "support-metric");
 }
 
 function drawOpposeChart(allUsData) {
@@ -261,11 +312,11 @@ function drawOpposeChart(allUsData) {
   });
 
   const spikeLabel = createSvgElement("text", {
-    x: xForYear(2021, minYear, maxYear) - 20,
+    x: xForYear(2020.5, minYear, maxYear) - 6,
     y: yForRate(6.95, minRate, maxRate),
     class: "annotation oppose-annotation"
   });
-  spikeLabel.textContent = "Sharp 2020-2021 surge";
+  spikeLabel.textContent = "Fast spike in just 2 years";
   svg.appendChild(spikeLabel);
 
   const stayHigh = createSvgElement("text", {
@@ -273,8 +324,13 @@ function drawOpposeChart(allUsData) {
     y: yForRate(5.9, minRate, maxRate),
     class: "annotation oppose-annotation"
   });
-  stayHigh.textContent = "2023 still above 2019";
+  stayHigh.textContent = "2023 remains above pre-spike level";
   svg.appendChild(stayHigh);
+
+  const start = data[0];
+  const peak = data.reduce((best, d) => (d.rate > best.rate ? d : best), data[0]);
+  const increasePercent = ((peak.rate - start.rate) / start.rate) * 100;
+  drawMetricBadge("oppose-badge", "2019 to 2021 jump", `+${increasePercent.toFixed(0)}% higher`, "oppose-metric");
 }
 
 function init() {

@@ -8,71 +8,99 @@
 </head>
 <body>
   <main class="page">
-    <header>
-      <h1>Homework: Opposing Data Visualizations</h1>
-      <p class="student-meta">
-        Name: Your Name |
-        Email: your.email@asu.edu
+    <header class="hero">
+      <p class="assignment-tag">CSE 578 - Homework: Visualization Rhetoric</p>
+      <h1>Can opposite stories both sound true in the same homicide dataset?</h1>
+      <div class="student-meta-row">
+        <span class="meta-pill">Name: Your Name</span>
+        <span class="meta-pill">Email: your.email@asu.edu</span>
+      </div>
+      <p>
+        U.S. public safety is controversial because debates about crime policy often use the same
+        numbers but emphasize different periods. One narrative says the country is significantly
+        safer than in the early 1990s. The opposing narrative argues that the recent jump in lethal
+        violence proves danger remains elevated.
       </p>
       <p>
-        <strong>Topic:</strong> Is the United States becoming safer from lethal violence?
-      </p>
-      <p>
-        Homicide trends are politically and socially controversial because different groups focus on
-        different time windows to argue opposite claims about safety, public policy, and social
-        progress. One side emphasizes long-term decline compared with the early 1990s, while the
-        other side emphasizes the sharp rise around 2020 and argues that danger remains high.
-      </p>
-      <p>
-        Both charts below use the same source dataset:
+        Both visualizations below use the same source dataset:
         <a href="https://ourworldindata.org/grapher/homicide-rate-unodc" target="_blank" rel="noopener noreferrer">
           Our World in Data - Homicide rate (UNODC)
         </a>.
-        The framing changes through selective time windows, baseline choices, and color/annotation
-        emphasis.
+        The opposing arguments are produced through framing choices: time-window selection, axis
+        design, annotation style, and color connotation.
       </p>
+      <div class="framing-strip">
+        <div class="framing-chip">Same source dataset</div>
+        <div class="framing-chip">Different temporal framing</div>
+        <div class="framing-chip">Different emotional styling</div>
+      </div>
     </header>
 
     <section class="charts-row">
       <article class="chart-card support">
-        <h2>Yes: America is much safer than in the 1990s</h2>
-        <svg id="support-chart" class="chart-svg" viewBox="0 0 560 360" aria-label="Long-term homicide decline chart"></svg>
+        <div class="chart-header">
+          <span class="side-badge">Affirmative / "Yes"</span>
+          <h2>America is much safer than during the 1990s crime wave</h2>
+        </div>
+        <p class="chart-kpi">
+          Long-run reduction since peak year:
+          <strong id="support-kpi">--</strong>
+        </p>
+        <svg id="support-chart" class="chart-svg" viewBox="0 0 620 390" aria-label="Long-term homicide decline chart"></svg>
         <p class="caption">
-          This chart highlights the full 1990-2023 trend and emphasizes the large long-run decline
-          from about 9.6 to 5.8 homicides per 100,000.
+          The full 1990-2023 trend with a zero-baseline emphasizes a broad multi-decade decline and
+          frames recent years as part of sustained historical improvement.
         </p>
       </article>
 
       <article class="chart-card oppose">
-        <h2>No: Recent years still show a public-safety warning</h2>
-        <svg id="oppose-chart" class="chart-svg" viewBox="0 0 560 360" aria-label="Recent homicide spike chart"></svg>
+        <div class="chart-header">
+          <span class="side-badge">Negative / "No"</span>
+          <h2>Recent years still signal a serious public-safety warning</h2>
+        </div>
+        <p class="chart-kpi">
+          Increase from 2019 to 2021:
+          <strong id="oppose-kpi">--</strong>
+        </p>
+        <svg id="oppose-chart" class="chart-svg" viewBox="0 0 620 390" aria-label="Recent homicide surge chart"></svg>
         <p class="caption">
-          This chart zooms into 2019-2023 and uses a truncated y-axis to stress the abrupt jump in
-          2020-2021 and the still-elevated 2023 value relative to 2019.
+          A focused 2019-2023 view with a truncated y-axis magnifies the 2020-2021 surge and keeps
+          attention on the fact that 2023 remains above the 2019 baseline.
         </p>
       </article>
     </section>
 
     <section class="writeups">
-      <article>
+      <article class="writeup-card support-note">
         <h3>Left chart rhetoric writeup (affirmative framing)</h3>
         <p>
-          I use <strong>temporal framing</strong> by showing the entire 1990-2023 range, which makes
-          the dominant narrative a long-term decline. I also use <strong>color connotation</strong>
-          (cool blue/green) and a <strong>zero-baseline y-axis</strong>, both of which reduce perceived
-          volatility and visually communicate gradual improvement. Finally, the annotation compares
-          endpoints to reinforce the idea that current conditions are much better than the historic
-          peak period.
+          I designed the left chart to persuade viewers that progress is real. The primary technique
+          is <strong>temporal framing</strong>: using the full 1990-2023 horizon changes the story from
+          short-term volatility to long-term decline. I also use <strong>scale framing</strong> with a
+          y-axis that starts at zero, which visually compresses yearly fluctuations and strengthens
+          the impression of steady improvement.
+        </p>
+        <p>
+          The cool blue palette and "recovery" language are deliberate
+          <strong>affective cues</strong> that reduce urgency. Endpoint and peak annotations create a
+          memorable before/after comparison, making the argument persuasive by showing that present
+          conditions look better than the high-violence era that many people remember.
         </p>
       </article>
-      <article>
+
+      <article class="writeup-card oppose-note">
         <h3>Right chart rhetoric writeup (negative framing)</h3>
         <p>
-          I use <strong>selective windowing</strong> to isolate 2019-2023, where the most dramatic
-          increase is visible. I also apply <strong>axis truncation</strong> (starting near 4.5 instead
-          of zero), which magnifies year-to-year differences and makes the 2020-2021 surge look
-          alarmingly steep. Warm red tones and callout labels increase urgency, supporting a skeptical
-          argument that recent trends still justify concern despite any long-term progress.
+          I designed the right chart to persuade viewers that concern is still justified. The key
+          technique is <strong>selective windowing</strong>: by isolating 2019-2023, the sudden
+          escalation appears central rather than incidental. I also use <strong>axis truncation</strong>
+          (starting at 4.5 instead of zero), which amplifies the visual steepness of the increase.
+        </p>
+        <p>
+          Warm reds, warning labels, and explicit baseline comparison are
+          <strong>narrative urgency cues</strong>. These choices frame the same data as a warning
+          story: despite long-run gains, recent rates remain elevated enough to support a skeptical
+          "not safe enough" viewpoint.
         </p>
       </article>
     </section>
