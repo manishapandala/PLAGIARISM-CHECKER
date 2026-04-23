@@ -1,11 +1,13 @@
 const DATA_PATH = "./data/homicide-rate-unodc.csv";
 
-const LEFT_MARGIN = 58;
-const RIGHT_MARGIN = 26;
-const TOP_MARGIN = 30;
-const BOTTOM_MARGIN = 42;
-const INNER_WIDTH = 560 - LEFT_MARGIN - RIGHT_MARGIN;
-const INNER_HEIGHT = 360 - TOP_MARGIN - BOTTOM_MARGIN;
+const LEFT_MARGIN = 66;
+const RIGHT_MARGIN = 24;
+const TOP_MARGIN = 34;
+const BOTTOM_MARGIN = 50;
+const CHART_WIDTH = 620;
+const CHART_HEIGHT = 390;
+const INNER_WIDTH = CHART_WIDTH - LEFT_MARGIN - RIGHT_MARGIN;
+const INNER_HEIGHT = CHART_HEIGHT - TOP_MARGIN - BOTTOM_MARGIN;
 
 function parseCsv(text) {
   const lines = text.trim().split("\n");
@@ -147,12 +149,6 @@ function drawAxes(svg, yearTicks, rateTicks, minYear, maxYear, minRate, maxRate,
   svg.appendChild(axisLayer);
 }
 
-function drawMetricBadge(targetId, title, value, classes) {
-  const badge = document.getElementById(targetId);
-  if (!badge) return;
-  badge.innerHTML = `<span class="metric-title">${title}</span><span class="metric-value ${classes}">${value}</span>`;
-}
-
 function drawArrowAnnotation(svg, x1, y1, x2, y2, classes) {
   const arrow = createSvgElement("line", {
     x1,
@@ -165,10 +161,10 @@ function drawArrowAnnotation(svg, x1, y1, x2, y2, classes) {
   svg.appendChild(arrow);
 }
 
-function createArrowMarker(svg, color) {
+function createArrowMarker(svg, markerId, color) {
   const defs = createSvgElement("defs");
   const marker = createSvgElement("marker", {
-    id: "arrowhead",
+    id: markerId,
     markerWidth: 8,
     markerHeight: 8,
     refX: 6,
@@ -195,7 +191,7 @@ function drawSupportChart(allUsData) {
   const minRate = 0;
   const maxRate = 10;
 
-  createArrowMarker(svg, "#2563eb");
+  createArrowMarker(svg, "support-arrowhead", "#1d4ed8");
 
   drawAxes(
     svg,
@@ -252,9 +248,16 @@ function drawSupportChart(allUsData) {
     yForRate(last.rate, minRate, maxRate) - 8,
     "support-arrow"
   );
+  const supportArrow = svg.querySelector(".support-arrow");
+  if (supportArrow) {
+    supportArrow.setAttribute("marker-end", "url(#support-arrowhead)");
+  }
 
   const declinePercent = ((first.rate - last.rate) / first.rate) * 100;
-  drawMetricBadge("support-badge", "1991 to 2023 change", `${declinePercent.toFixed(0)}% lower`, "support-metric");
+  const supportKpi = document.getElementById("support-kpi");
+  if (supportKpi) {
+    supportKpi.textContent = `${declinePercent.toFixed(0)}% lower`;
+  }
 }
 
 function drawOpposeChart(allUsData) {
@@ -330,7 +333,10 @@ function drawOpposeChart(allUsData) {
   const start = data[0];
   const peak = data.reduce((best, d) => (d.rate > best.rate ? d : best), data[0]);
   const increasePercent = ((peak.rate - start.rate) / start.rate) * 100;
-  drawMetricBadge("oppose-badge", "2019 to 2021 jump", `+${increasePercent.toFixed(0)}% higher`, "oppose-metric");
+  const opposeKpi = document.getElementById("oppose-kpi");
+  if (opposeKpi) {
+    opposeKpi.textContent = `+${increasePercent.toFixed(0)}% higher`;
+  }
 }
 
 function init() {
@@ -350,8 +356,8 @@ function init() {
       charts.forEach((chart) => {
         chart.innerHTML = "";
         const message = createSvgElement("text", {
-          x: 280,
-          y: 180,
+          x: CHART_WIDTH / 2,
+          y: CHART_HEIGHT / 2,
           "text-anchor": "middle",
           class: "annotation"
         });

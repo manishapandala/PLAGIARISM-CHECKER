@@ -4,24 +4,27 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Homework: Opposing Data Visualizations</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
   <main class="page">
-    <header class="hero">
-      <p class="assignment-tag">CSE 578 - Homework: Visualization Rhetoric</p>
+    <header class="assignment-header">
+      <p class="assignment-tag">CSE 578 · Homework · Visualization Rhetoric</p>
       <h1>Can opposite stories both sound true in the same homicide dataset?</h1>
-      <div class="student-meta-row">
+      <div class="student-meta-row" aria-label="Student information">
         <span class="meta-pill">Name: Your Name</span>
         <span class="meta-pill">Email: your.email@asu.edu</span>
       </div>
-      <p>
+      <p class="intro-copy">
         U.S. public safety is controversial because debates about crime policy often use the same
         numbers but emphasize different periods. One narrative says the country is significantly
         safer than in the early 1990s. The opposing narrative argues that the recent jump in lethal
         violence proves danger remains elevated.
       </p>
-      <p>
+      <p class="intro-copy">
         Both visualizations below use the same source dataset:
         <a href="https://ourworldindata.org/grapher/homicide-rate-unodc" target="_blank" rel="noopener noreferrer">
           Our World in Data - Homicide rate (UNODC)
@@ -29,12 +32,14 @@
         The opposing arguments are produced through framing choices: time-window selection, axis
         design, annotation style, and color connotation.
       </p>
-      <div class="framing-strip">
-        <div class="framing-chip">Same source dataset</div>
-        <div class="framing-chip">Different temporal framing</div>
-        <div class="framing-chip">Different emotional styling</div>
+      <div class="framing-chip-row" aria-label="Framing strategies used">
+        <span class="chip yes">Same source dataset</span>
+        <span class="chip yes">Different temporal framing</span>
+        <span class="chip no">Different emotional styling</span>
       </div>
     </header>
+
+    <p class="comparison-divider">ONE DATASET · TWO OPPOSING ARGUMENTS</p>
 
     <section class="charts-row">
       <article class="chart-card support">
@@ -46,7 +51,7 @@
           Long-run reduction since peak year:
           <strong id="support-kpi">--</strong>
         </p>
-        <svg id="support-chart" class="chart-svg" viewBox="0 0 620 390" aria-label="Long-term homicide decline chart"></svg>
+        <svg id="support-chart" class="chart-svg" viewBox="0 0 620 390" role="img" aria-label="Long-term homicide decline chart"></svg>
         <p class="caption">
           The full 1990-2023 trend with a zero-baseline emphasizes a broad multi-decade decline and
           frames recent years as part of sustained historical improvement.
@@ -62,7 +67,7 @@
           Increase from 2019 to 2021:
           <strong id="oppose-kpi">--</strong>
         </p>
-        <svg id="oppose-chart" class="chart-svg" viewBox="0 0 620 390" aria-label="Recent homicide surge chart"></svg>
+        <svg id="oppose-chart" class="chart-svg" viewBox="0 0 620 390" role="img" aria-label="Recent homicide surge chart"></svg>
         <p class="caption">
           A focused 2019-2023 view with a truncated y-axis magnifies the 2020-2021 surge and keeps
           attention on the fact that 2023 remains above the 2019 baseline.
